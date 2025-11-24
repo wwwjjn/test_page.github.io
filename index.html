@@ -1045,9 +1045,9 @@
   });
 </script>
 <script type="module">
-  import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js?module";
-  import { OrbitControls } from "https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js?module";
-  import { PLYLoader } from "https://unpkg.com/three@0.160.0/examples/jsm/loaders/PLYLoader.js?module";
+  import * as THREE from "three";
+  import { OrbitControls } from "https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js";
+  import { PLYLoader } from "https://unpkg.com/three@0.160.0/examples/jsm/loaders/PLYLoader.js";
 
   window.addEventListener("DOMContentLoaded", () => {
     const container   = document.getElementById("gs4d-viewer");
@@ -1087,10 +1087,10 @@
     const FRAME_COUNT = 20; // time_00000 ~ time_00019
     const FRAME_BASE  = "static/gaussian_pertimestamp";
     const FRAME_FILES = [];
-
     for (let i = 0; i < FRAME_COUNT; i++) {
-      const name = `${FRAME_BASE}/time_${String(i).padStart(5, "0")}.ply`;
-      FRAME_FILES.push(name);
+      FRAME_FILES.push(
+        `${FRAME_BASE}/time_${String(i).padStart(5, "0")}.ply`
+      );
     }
 
     const loader  = new PLYLoader();
@@ -1153,9 +1153,7 @@
         console.warn("Frame not loaded yet:", idx);
         return;
       }
-      if (frames[current]) {
-        frames[current].visible = false;
-      }
+      if (frames[current]) frames[current].visible = false;
       frames[idx].visible = true;
       current = idx;
       frameSlider.value = String(idx);
@@ -1206,6 +1204,7 @@
     });
   });
 </script>
+
 
 </body>
 </html>
