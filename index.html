@@ -232,20 +232,25 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     }
 
-    /* Labels on top of each side */
     .comparison-label {
       position: absolute;
       top: 12px;
       padding: 4px 10px;
       border-radius: 999px;
-      background: rgba(0,0,0,0.65);
-      color: #fff;
+      font-size: 0.8rem;
       font-weight: 600;
-      font-size: 0.85rem;
-      z-index: 5;
+      background: rgba(0, 0, 0, 0.55);
+      color: #fff;
+      z-index: 4;
     }
-    .comparison-label-left { left: 16px; }
-    .comparison-label-right { right: 16px; }
+
+    .comparison-label-left {
+      left: 16px;
+    }
+
+    .comparison-label-right {
+      right: 16px;
+    }
 
     /* Results main image + text banners */
     .results-main-wrapper {
@@ -280,6 +285,25 @@
     .result-thumb-inner img { display: none; }
     .result-thumb.is-active .result-thumb-inner {
       border-color: #3273dc;
+    }
+    .video-side-label {
+      position: absolute;
+      top: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.65);
+      color: #fff;
+      font-size: 0.85rem;
+      z-index: 4;
+      pointer-events: none; /* 드래그/클릭 방해 안 하도록 */
+    }
+
+    .video-side-label-left {
+      left: 16px;
+    }
+
+    .video-side-label-right {
+      right: 16px;
     }
   </style>
 </head>
@@ -457,30 +481,36 @@
 
       <div class="comparison-wrapper">
         <div class="comparison-video-container" id="video-compare-container">
-          <video id="video-left" class="compare-video" muted loop playsinline preload="metadata">
+          <!-- Left: Baseline -->
+          <video id="video-left" class="compare-video"
+                muted loop playsinline preload="metadata" autoplay>
             <source src="static/videos/carousel2.mp4" type="video/mp4">
           </video>
 
-          <video id="video-right" class="compare-video" muted loop playsinline preload="metadata">
+          <!-- Right: Ours -->
+          <video id="video-right" class="compare-video"
+                muted loop playsinline preload="metadata" autoplay>
             <source src="static/videos/carousel1.mp4" type="video/mp4">
           </video>
 
-          <!-- overlay labels -->
-          <span class="comparison-label comparison-label-left" id="video-left-label-overlay">
+          <!-- 영상 위에 떠 있는 라벨 (JS에서 텍스트 바꿈) -->
+          <span class="comparison-label comparison-label-left" id="video-left-label">
             Baseline
           </span>
-          <span class="comparison-label comparison-label-right" id="video-right-label-overlay">
+          <span class="comparison-label comparison-label-right" id="video-right-label">
             Ours
           </span>
 
+          <!-- 가운데 세로 슬라이더 핸들 -->
           <div class="compare-handle" id="compare-handle">
             <div class="compare-handle-grip"></div>
           </div>
         </div>
 
+        <!-- 영상 아래쪽 작은 캡션 (원하면 지워도 됨) -->
         <div class="is-flex is-justify-content-space-between mt-2 is-size-7 has-text-grey">
-          <span id="video-left-label">Baseline</span>
-          <span id="video-right-label">Ours</span>
+          <span>Baseline</span>
+          <span>Ours</span>
         </div>
       </div>
     </div>
