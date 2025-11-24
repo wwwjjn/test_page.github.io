@@ -531,35 +531,25 @@
           <div class="results-thumbs" id="viewer-3d-thumbs"></div>
         </div>
 
-        <!-- 4D (PLY 시퀀스) 뷰어 -->
+        <!-- 4D (Viser .viser) 뷰어 -->
         <div class="column is-12-tablet is-6-desktop">
-          <h3 class="title is-5 has-text-centered mb-3">4D Gaussian Point Cloud</h3>
+          <h3 class="title is-5 has-text-centered mb-3">4D Gaussian Viewer (Viser)</h3>
 
-          <!-- three.js 캔버스 -->
-          <div id="gs4d-viewer"
-               style="width: 100%; height: 420px; background:#000; border-radius:12px;">
-          </div>
-
-          <!-- frame 슬라이더 + 재생 버튼 -->
-          <div class="field is-grouped is-align-items-center mt-3">
-            <div class="control">
-              <span id="gs4d-frame-label"
-                    class="has-text-grey-light is-size-7">frame: 0</span>
-            </div>
-            <div class="control is-expanded">
-              <input id="gs4d-frame-slider"
-                     class="slider is-fullwidth is-small"
-                     step="1" min="0" max="19" value="0" type="range">
-            </div>
-            <div class="control">
-              <button id="gs4d-play-pause"
-                      class="button is-small is-dark">▶</button>
-            </div>
+          <div class="box is-paddingless" style="border-radius:12px; overflow:hidden;">
+            <iframe
+              src="static/viser-client/?playbackPath=static/recordings/scene_4d.viser"
+              width="100%"
+              height="420"
+              frameborder="0"
+              style="border:none; display:block; background:#000;"
+              loading="lazy"
+              allowfullscreen>
+            </iframe>
           </div>
 
           <p class="has-text-grey is-size-7 mt-1">
-            Loads <code>static/gaussian_pertimestamp/time_00000.ply</code> …
-            <code>time_00019.ply</code> as a time-varying point cloud.
+            Playback of a pre-recorded <code>.viser</code> scene generated from
+            the 4D Gaussian splatting sequence.
           </p>
         </div>
       </div>
