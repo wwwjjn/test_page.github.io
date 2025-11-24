@@ -67,8 +67,8 @@
   <title>Paper Title</title>
   
   <!-- Favicon and App Icons -->
-  <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
-  <link rel="apple-touch-icon" href="static/images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="">
+  <link rel="apple-touch-icon" href="">
   
   <!-- Critical CSS - Load synchronously -->
   <link rel="stylesheet" href="static/css/bulma.min.css">
@@ -426,10 +426,6 @@
     <div class="container is-max-desktop">
       <h2 class="title is-3 has-text-centered">Qualitative Video Results</h2>
 
-      <div class="has-text-centered mt-3">
-        <button id="play-all" class="button is-small is-dark">Play all</button>
-        <button id="pause-all" class="button is-small is-light">Pause all</button>
-      </div>
 
       <!-- 1번째 샘플 -->
       <div class="columns is-vcentered mt-5">
@@ -576,66 +572,79 @@
   </footer>
 
   <!-- =========================
-       INLINE SCRIPTS (4D viewer + Qual video controls)
-     ========================= -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      /* ----- Interactive 4D (model-viewer) ----- */
-      const mv = document.querySelector('#mv-4d');
-      const slider = document.querySelector('#time-slider');
-      const playBtn = document.querySelector('#play-btn');
-      const pauseBtn = document.querySelector('#pause-btn');
-      const TOTAL_DURATION = 5.0; // ★ 애니메이션 길이(초)에 맞게 수정
+     INLINE SCRIPTS (4D viewer + Qual video controls)
+   ========================= -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    /* ----- Interactive 4D (model-viewer) ----- */
+    const mv = document.querySelector('#mv-4d');
+    const slider = document.querySelector('#time-slider');
+    const playBtn = document.querySelector('#play-btn');
+    const pauseBtn = document.querySelector('#pause-btn');
+    const TOTAL_DURATION = 5.0; // ★ 애니메이션 길이(초)에 맞게 수정
 
-      if (mv && slider) {
-        mv.addEventListener('load', () => {
+    if (mv && slider) {
+      mv.addEventListener('load', () => {
+        mv.pause();
+        mv.currentTime = 0;
+
+        slider.addEventListener('input', () => {
+          const t = parseFloat(slider.value); // 0~1
+          mv.currentTime = t * TOTAL_DURATION;
+        });
+
+        playBtn?.addEventListener('click', () => {
+          mv.play();
+        });
+
+        pauseBtn?.addEventListener('click', () => {
           mv.pause();
-          mv.currentTime = 0;
-
-          slider.addEventListener('input', () => {
-            const t = parseFloat(slider.value); // 0~1
-            mv.currentTime = t * TOTAL_DURATION;
-          });
-
-          playBtn?.addEventListener('click', () => {
-            mv.play();
-          });
-
-          pauseBtn?.addEventListener('click', () => {
-            mv.pause();
-          });
         });
-      }
+      });
+    }
 
-      /* ----- Qualitative video: Play all / Pause all ----- */
-      const videos = Array.from(document.querySelectorAll('.qual-video'));
-      const playAllBtn = document.getElementById('play-all');
-      const pauseAllBtn = document.getElementById('pause-all');
+    /* ----- Qualitative video: Play all / Pause all ----- */
+    const videos = Array.from(document.querySelectorAll('.qual-video'));
+    const playAllBtn = document.getElementById('play-all');
+    const pauseAllBtn = document.getElementById('pause-all');
 
-      if (videos.length) {
-        playAllBtn?.addEventListener('click', () => {
-          videos.forEach(v => {
-            try {
-              v.currentTime = 0; // 항상 처음부터 보고 싶으면 유지
-              v.play();
-            } catch (e) {
-              console.error(e);
-            }
-          });
+    if (videos.length) {
+      // 버튼으로 전체 재생/정지
+      playAllBtn?.addEventListener('click', () => {
+        videos.forEach(v => {
+          try {
+            v.currentTime = 0;
+            v.play();
+          } catch (e) {
+            console.error(e);
+          }
         });
+      });
 
-        pauseAllBtn?.addEventListener('click', () => {
-          videos.forEach(v => {
-            try {
-              v.pause();
-            } catch (e) {
-              console.error(e);
-            }
-          });
+      pauseAllBtn?.addEventListener('click', () => {
+        videos.forEach(v => {
+          try {
+            v.pause();
+          } catch (e) {
+            console.error(e);
+          }
         });
-      }
-    });
-  </script>
+      });
+
+      // ★ 각 영상 클릭 시 개별 토글
+      videos.forEach(v => {
+        v.addEventListener('click', () => {
+          if (v.paused) {
+            v.play();
+          } else {
+            v.pause();
+          }
+        });
+      });
+    }
+  });
+</script>
+
 
   <!-- Statcounter tracking code (원하면 여기 추가) -->
 
