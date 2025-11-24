@@ -93,18 +93,17 @@
     };
   </script>
 
-  <!-- TODO(TITLE: webpage에 노출되는 제목) -->
   <title>Paper Title</title>
 
   <!-- Favicon and App Icons -->
   <link rel="icon" type="image/x-icon" href="">
   <link rel="apple-touch-icon" href="">
 
-  <!-- Critical CSS - Load synchronously -->
+  <!-- Critical CSS -->
   <link rel="stylesheet" href="static/css/bulma.min.css">
   <link rel="stylesheet" href="static/css/index.css">
 
-  <!-- Non-critical CSS - Load asynchronously -->
+  <!-- Non-critical CSS -->
   <link rel="preload" href="static/css/bulma-carousel.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <link rel="preload" href="static/css/bulma-slider.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <link rel="preload" href="static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -128,7 +127,7 @@
   <script defer src="static/js/bulma-slider.min.js"></script>
   <script defer src="static/js/index.js"></script>
 
-  <!-- 3D Viewer (model-viewer) -->
+  <!-- 3D Viewer -->
   <script type="module" src="https://unpkg.com/@google/model-viewer@latest/dist/model-viewer.min.js"></script>
 
   <!-- Structured Data for Academic Papers -->
@@ -139,16 +138,10 @@
     "headline": "PAPER_TITLE",
     "description": "BRIEF_DESCRIPTION_OF_YOUR_RESEARCH_CONTRIBUTION_AND_FINDINGS",
     "author": [
-      {
-        "@type": "Person",
-        "name": "FIRST_AUTHOR_NAME",
-        "affiliation": { "@type": "Organization", "name": "INSTITUTION_NAME" }
-      },
-      {
-        "@type": "Person",
-        "name": "SECOND_AUTHOR_NAME",
-        "affiliation": { "@type": "Organization", "name": "INSTITUTION_NAME" }
-      }
+      { "@type": "Person", "name": "FIRST_AUTHOR_NAME",
+        "affiliation": { "@type": "Organization", "name": "INSTITUTION_NAME" } },
+      { "@type": "Person", "name": "SECOND_AUTHOR_NAME",
+        "affiliation": { "@type": "Organization", "name": "INSTITUTION_NAME" } }
     ],
     "datePublished": "2024-01-01",
     "publisher": { "@type": "Organization", "name": "CONFERENCE_OR_JOURNAL_NAME" },
@@ -158,7 +151,7 @@
     "abstract": "FULL_ABSTRACT_TEXT_HERE",
     "citation": "BIBTEX_CITATION_HERE",
     "isAccessibleForFree": true,
-    "license": "https://creativecommons.org/licenses/by/4.0/",
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/",
     "mainEntity": { "@type": "WebPage", "@id": "https://YOUR_DOMAIN.com/YOUR_PROJECT_PAGE" },
     "about": [
       { "@type": "Thing", "name": "RESEARCH_AREA_1" },
@@ -194,7 +187,6 @@
     .comparison-wrapper {
       margin-top: 1.5rem;
     }
-
     .comparison-video-container {
       position: relative;
       width: 100%;
@@ -205,7 +197,6 @@
       background: #000;
       aspect-ratio: 16 / 9;
     }
-
     .comparison-video-container .compare-video {
       position: absolute;
       inset: 0;
@@ -213,11 +204,7 @@
       height: 100%;
       object-fit: cover;
     }
-
-    #video-left {
-      z-index: 1;
-    }
-
+    #video-left { z-index: 1; }
     #video-right {
       z-index: 2;
       clip-path: inset(0 0 0 50%);
@@ -231,13 +218,12 @@
       width: 2px;
       background-color: rgba(255, 255, 255, 0.9);
       box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4);
-      z-index: 3;
+      z-index: 4;
       cursor: ew-resize;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-
     .compare-handle-grip {
       width: 20px;
       height: 40px;
@@ -246,18 +232,31 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     }
 
+    /* Labels on top of each side */
+    .comparison-label {
+      position: absolute;
+      top: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.65);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.85rem;
+      z-index: 5;
+    }
+    .comparison-label-left { left: 16px; }
+    .comparison-label-right { right: 16px; }
+
     /* Results main image + text banners */
     .results-main-wrapper {
       max-width: 960px;
       margin: 0 auto;
     }
-
     .results-main-image {
       width: 100%;
       border-radius: 12px;
       box-shadow: 0 8px 24px rgba(0,0,0,0.15);
     }
-
     .results-thumbs {
       margin-top: 1rem;
       display: flex;
@@ -265,14 +264,12 @@
       justify-content: center;
       gap: 0.75rem;
     }
-
     .result-thumb {
       border: none;
       padding: 0;
       background: none;
       cursor: pointer;
     }
-
     .result-thumb-inner {
       border-radius: 8px;
       overflow: hidden;
@@ -280,11 +277,7 @@
       padding: 0.35rem 0.75rem;
       background: #fff;
     }
-
-    .result-thumb-inner img {
-      display: none;
-    }
-
+    .result-thumb-inner img { display: none; }
     .result-thumb.is-active .result-thumb-inner {
       border-color: #3273dc;
     }
@@ -299,9 +292,7 @@
 
   <main id="main-content">
 
-  <!-- =========================
-       HERO: Title / Authors / Links
-     ========================= -->
+  <!-- HERO -->
   <section class="hero" id="top">
     <div class="hero-body">
       <div class="container is-max-desktop">
@@ -309,20 +300,10 @@
           <div class="column has-text-centered">
             <h1 class="title is-1 publication-title">VDSL 3D team Template</h1>
 
-            <!-- Authors -->
             <div class="is-size-5 publication-authors" id="authors-container">
-              <span class="author-block">
-                <a href="FIRST AUTHOR PERSONAL LINK" target="_blank">Suwoong Yeom</a><sup>*</sup>
-              </span>,
-              <span class="author-block">
-                <a href="SECOND AUTHOR PERSONAL LINK" target="_blank">Joonsik Nam</a><sup>*</sup>
-              </span>,
-              <span class="author-block">
-                <a href="THIRD AUTHOR PERSONAL LINK" target="_blank">Seunggyu Choi</a>
-              </span>
+              <!-- JS에서 채움 -->
             </div>
 
-            <!-- Affiliation & venue -->
             <div class="is-size-5 publication-authors">
               <span class="author-block" id="paper-subtitle">
                 Sogang University<br>Conference name and year
@@ -332,43 +313,38 @@
               </span>
             </div>
 
-            <!-- Links: PDF / arXiv / OpenReview / Code -->
             <div class="column has-text-centered">
               <div class="publication-links">
                 <span class="link-block">
-                  <a id="link-pdf" href="https://YOUR_PDF_LINK.pdf" target="_blank"
+                  <a id="link-pdf" href="#" target="_blank"
                      class="external-link button is-normal is-rounded is-dark">
                     <span class="icon"><i class="fas fa-file-pdf"></i></span>
                     <span>Paper (PDF)</span>
                   </a>
                 </span>
-
                 <span class="link-block">
-                  <a id="link-arxiv" href="https://arxiv.org/abs/ARXIV_ID" target="_blank"
+                  <a id="link-arxiv" href="#" target="_blank"
                      class="external-link button is-normal is-rounded is-dark">
                     <span class="icon"><i class="ai ai-arxiv"></i></span>
                     <span>arXiv</span>
                   </a>
                 </span>
-
                 <span class="link-block">
-                  <a id="link-openreview" href="https://openreview.net/forum?id=OPENREVIEW_ID" target="_blank"
+                  <a id="link-openreview" href="#" target="_blank"
                      class="external-link button is-normal is-rounded is-dark">
                     <span class="icon"><i class="fas fa-comments"></i></span>
                     <span>OpenReview</span>
                   </a>
                 </span>
-
                 <span class="link-block">
-                  <a id="link-code" href="https://github.com/YOUR_REPO_HERE" target="_blank"
+                  <a id="link-code" href="#" target="_blank"
                      class="external-link button is-normal is-rounded is-dark">
                     <span class="icon"><i class="fab fa-github"></i></span>
                     <span>Code</span>
                   </a>
                 </span>
-
                 <span class="link-block">
-                  <a id="link-supp" href="static/pdfs/supplementary_material.pdf" target="_blank"
+                  <a id="link-supp" href="#" target="_blank"
                      class="external-link button is-normal is-rounded is-dark">
                     <span class="icon"><i class="fas fa-file-pdf"></i></span>
                     <span>Supplementary</span>
@@ -383,9 +359,7 @@
     </div>
   </section>
 
-  <!-- =========================
-       TEASER VIDEO
-     ========================= -->
+  <!-- TEASER -->
   <section class="hero teaser">
     <div class="container is-max-desktop">
       <div class="hero-body">
@@ -399,9 +373,7 @@
     </div>
   </section>
 
-  <!-- =========================
-       ABSTRACT
-     ========================= -->
+  <!-- ABSTRACT -->
   <section class="section hero is-light" id="abstract">
     <div class="container is-max-desktop">
       <div class="columns is-centered has-text-centered">
@@ -418,9 +390,7 @@
     </div>
   </section>
 
-  <!-- =========================
-       MODEL OVERVIEW FIGURE
-     ========================= -->
+  <!-- MODEL OVERVIEW -->
   <section class="section" id="model-overview">
     <div class="container is-max-desktop">
       <div class="columns is-centered">
@@ -439,9 +409,7 @@
     </div>
   </section>
 
-  <!-- =========================
-       3D VIEWER (Interactive 3D/4D)
-     ========================= -->
+  <!-- 3D VIEWER -->
   <section class="section hero is-light" id="viewer-3d">
     <div class="container is-max-desktop">
       <div class="columns is-centered">
@@ -465,9 +433,7 @@
     </div>
   </section>
 
-  <!-- =========================
-       RESULTS: main image + 텍스트 배너
-     ========================= -->
+  <!-- RESULTS (Text banners) -->
   <section class="section" id="results">
     <div class="container is-max-desktop">
       <h2 class="title is-3 has-text-centered">Results</h2>
@@ -478,15 +444,13 @@
              alt="Main result image">
 
         <div class="results-thumbs" id="results-thumbs-container">
-          <!-- JS가 PAGE_CONFIG.results 내용으로 채움 -->
+          <!-- JS에서 PAGE_CONFIG.results로 채움 -->
         </div>
       </div>
     </div>
   </section>
 
-  <!-- =========================
-       2-WAY VIDEO COMPARISON (세로 슬라이더)
-     ========================= -->
+  <!-- QUALITATIVE VIDEO COMPARISON -->
   <section class="section" id="video-compare-slider">
     <div class="container is-max-desktop">
       <h2 class="title is-3 has-text-centered">Qualitative Video Comparison</h2>
@@ -501,6 +465,14 @@
             <source src="static/videos/carousel1.mp4" type="video/mp4">
           </video>
 
+          <!-- overlay labels -->
+          <span class="comparison-label comparison-label-left" id="video-left-label-overlay">
+            Baseline
+          </span>
+          <span class="comparison-label comparison-label-right" id="video-right-label-overlay">
+            Ours
+          </span>
+
           <div class="compare-handle" id="compare-handle">
             <div class="compare-handle-grip"></div>
           </div>
@@ -514,9 +486,7 @@
     </div>
   </section>
 
-  <!-- =========================
-       YOUTUBE VIDEO (PAPER TALK)
-     ========================= -->
+  <!-- YOUTUBE -->
   <section class="hero is-small is-light" id="video">
     <div class="hero-body">
       <div class="container">
@@ -536,9 +506,7 @@
     </div>
   </section>
 
-  <!-- =========================
-       추가 비디오 캐러셀 (옵션)
-     ========================= -->
+  <!-- MORE VIDEOS -->
   <section class="hero is-small" id="more-videos">
     <div class="hero-body">
       <div class="container">
@@ -564,9 +532,7 @@
     </div>
   </section>
 
-  <!-- =========================
-       BIBTEX
-     ========================= -->
+  <!-- BIBTEX -->
   <section class="section" id="BibTeX">
     <div class="container is-max-desktop content">
       <div class="bibtex-header">
@@ -586,11 +552,9 @@
     </div>
   </section>
 
-  </main> <!-- end main-content -->
+  </main>
 
-  <!-- =========================
-       FOOTER
-     ========================= -->
+  <!-- FOOTER -->
   <footer class="footer">
     <div class="container">
       <div class="columns is-centered">
@@ -616,14 +580,12 @@
     </div>
   </footer>
 
-  <!-- =========================
-       INLINE SCRIPTS
-   ========================= -->
+  <!-- INLINE SCRIPTS -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const cfg = window.PAGE_CONFIG || {};
 
-    /* ====== 0. 헤더 타이틀 / 저자 / 링크 채우기 ====== */
+    /* ===== 헤더 타이틀 / 저자 / 링크 ===== */
     if (cfg.paperTitle) {
       document.querySelectorAll('.publication-title')
         .forEach(n => n.textContent = cfg.paperTitle);
@@ -666,21 +628,26 @@
       setHref('link-supp', cfg.links.supp);
     }
 
-    /* ====== 1. 모든 video: 클릭하면 개별 play/pause 토글 ====== */
-    const videos = Array.from(document.querySelectorAll('video'));
-    videos.forEach(v => {
+    /* ===== 모든 video: 클릭하면 play/pause ===== */
+    const vLeft = document.getElementById('video-left');
+    const vRight = document.getElementById('video-right');
+
+    const allVideos = Array.from(document.querySelectorAll('video'));
+    allVideos.forEach(v => {
+      // 비교용 두 영상은 따로 핸들링
+      if (v === vLeft || v === vRight) return;
       v.addEventListener('click', () => {
         if (v.paused) v.play(); else v.pause();
       });
     });
 
-    /* ====== 2. 2-way video comparison: CONFIG에서 src/label 가져오기 ====== */
+    /* ===== Video comparison: src/label을 CONFIG에서 ===== */
     if (cfg.videoCompare) {
       const vc = cfg.videoCompare;
-      const vLeft = document.getElementById('video-left');
-      const vRight = document.getElementById('video-right');
       const leftLabel = document.getElementById('video-left-label');
       const rightLabel = document.getElementById('video-right-label');
+      const leftOverlay = document.getElementById('video-left-label-overlay');
+      const rightOverlay = document.getElementById('video-right-label-overlay');
 
       if (vLeft && vc.leftSrc) {
         const s = vLeft.querySelector('source');
@@ -692,65 +659,77 @@
       }
       if (leftLabel && vc.leftLabel) leftLabel.textContent = vc.leftLabel;
       if (rightLabel && vc.rightLabel) rightLabel.textContent = vc.rightLabel;
+      if (leftOverlay && vc.leftLabel) leftOverlay.textContent = vc.leftLabel;
+      if (rightOverlay && vc.rightLabel) rightOverlay.textContent = vc.rightLabel;
     }
 
-    // 세로 슬라이더 드래그
+    /* ===== 2-way slider 드래그 + 두 영상 동기 재생 ===== */
     const container = document.getElementById('video-compare-container');
-    const videoRight = document.getElementById('video-right');
+    const videoRight = vRight;
     const handle = document.getElementById('compare-handle');
+    let isDraggingCompare = false;
+
+    const updatePosFromClientX = (clientX) => {
+      const rect = container.getBoundingClientRect();
+      let t = (clientX - rect.left) / rect.width;
+      t = Math.max(0, Math.min(1, t));
+      const percent = t * 100;
+      if (videoRight) videoRight.style.clipPath = `inset(0 0 0 ${percent}%)`;
+      if (handle) handle.style.left = `${percent}%`;
+    };
 
     if (container && videoRight && handle) {
-      let isDragging = false;
-
-      const updatePosFromClientX = (clientX) => {
-        const rect = container.getBoundingClientRect();
-        let t = (clientX - rect.left) / rect.width;
-        t = Math.max(0, Math.min(1, t));
-        const percent = t * 100;
-        videoRight.style.clipPath = `inset(0 0 0 ${percent}%)`;
-        handle.style.left = `${percent}%`;
-      };
-
       const onPointerMove = (e) => {
-        if (!isDragging) return;
+        if (!isDraggingCompare) return;
         updatePosFromClientX(e.clientX);
       };
-
-      const stopDrag = () => { isDragging = false; };
-
+      const stopDrag = () => { isDraggingCompare = false; };
       const startDrag = (e) => {
-        isDragging = true;
+        isDraggingCompare = true;
         updatePosFromClientX(e.clientX);
         e.preventDefault();
       };
 
       handle.addEventListener('mousedown', startDrag);
       container.addEventListener('mousedown', startDrag);
-
       window.addEventListener('mousemove', onPointerMove);
       window.addEventListener('mouseup', stopDrag);
 
-      // 터치 지원
+      // 터치
       handle.addEventListener('touchstart', (e) => {
-        isDragging = true;
+        isDraggingCompare = true;
         updatePosFromClientX(e.touches[0].clientX);
       }, { passive: true });
-
       container.addEventListener('touchstart', (e) => {
-        isDragging = true;
+        isDraggingCompare = true;
         updatePosFromClientX(e.touches[0].clientX);
       }, { passive: true });
-
       window.addEventListener('touchmove', (e) => {
-        if (!isDragging) return;
+        if (!isDraggingCompare) return;
         updatePosFromClientX(e.touches[0].clientX);
       }, { passive: true });
+      window.addEventListener('touchend', () => { isDraggingCompare = false; });
+      window.addEventListener('touchcancel', () => { isDraggingCompare = false; });
 
-      window.addEventListener('touchend', stopDrag);
-      window.addEventListener('touchcancel', stopDrag);
+      // 클릭하면 두 영상 동시에 play/pause
+      const togglePair = () => {
+        if (!vLeft || !vRight) return;
+        const shouldPlay = vLeft.paused || vRight.paused;
+        [vLeft, vRight].forEach(vid => {
+          if (!vid) return;
+          if (shouldPlay) vid.play().catch(()=>{}); else vid.pause();
+        });
+      };
+      [container, handle, vLeft, vRight].forEach(el => {
+        if (!el) return;
+        el.addEventListener('click', () => {
+          if (isDraggingCompare) return; // 드래그 중 클릭무시
+          togglePair();
+        });
+      });
     }
 
-    /* ====== 3. Results: CONFIG에서 텍스트/이미지 가져와서 생성 ====== */
+    /* ===== Results: PAGE_CONFIG.results → 텍스트 배너 ===== */
     const mainResultImage = document.getElementById('result-main');
     const thumbsContainer = document.getElementById('results-thumbs-container');
 
