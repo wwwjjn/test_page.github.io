@@ -1115,41 +1115,13 @@
           geometry.computeBoundingSphere();
           geometry.center();
 
-          // ===== 1) 어떤 attribute 들이 있는지 찍어보기 (한번만 확인용) =====
           console.log("ATTRIBUTES:", Object.keys(geometry.attributes));
-
-          // ===== 2) SH DC(f_dc_0,1,2) → 색 만들기 =====
-          const attrR = geometry.getAttribute("f_dc_0");
-          const attrG = geometry.getAttribute("f_dc_1");
-          const attrB = geometry.getAttribute("f_dc_2");
-
-          if (attrR && attrG && attrB) {
-            const n = attrR.count;
-            const colors = new Float32Array(n * 3);
-
-            for (let i = 0; i < n; i++) {
-              // SH DC → sigmoid 로 [0,1]로 눌러주기
-              const r = 1 / (1 + Math.exp(-attrR.getX(i)));
-              const g = 1 / (1 + Math.exp(-attrG.getX(i)));
-              const b = 1 / (1 + Math.exp(-attrB.getX(i)));
-
-              colors[3 * i + 0] = r;
-              colors[3 * i + 1] = g;
-              colors[3 * i + 2] = b;
-            }
-
-            geometry.setAttribute(
-              "color",
-              new THREE.BufferAttribute(colors, 3)
-            );
-          } else {
-            console.warn("f_dc_0/1/2 attribute 를 못 찾았습니다.");
-          }
+          // 여기서 ["position", "normal", "color"] 나오는지 확인
 
           const material = new THREE.PointsMaterial({
             size: 0.01,
             sizeAttenuation: true,
-            vertexColors: !!geometry.getAttribute("color"), // ★ 이게 핵심
+            vertexColors: !!geometry.getAttribute("color"), // color 있으면 사용
           });
 
           const points = new THREE.Points(geometry, material);
@@ -1159,7 +1131,6 @@
           frames[idx] = points;
           loadedNum++;
 
-          // 첫 프레임 카메라 세팅
           if (idx === 0) {
             points.visible = true;
             current = 0;
@@ -1181,7 +1152,6 @@
         }
       );
     }
-
     for (let i = 0; i < FRAME_COUNT; i++) {
       loadFrame(i);
     }
