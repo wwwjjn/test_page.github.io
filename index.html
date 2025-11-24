@@ -267,23 +267,49 @@
       top: 0;
       bottom: 0;
       left: 50%;
+      width: 0;                /* 실제 라인은 자식에서 그림 */
+      z-index: 4;
+      cursor: ew-resize;
+    }
+
+    .compare-handle-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
       width: 2px;
       background-color: rgba(255, 255, 255, 0.9);
       box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4);
-      z-index: 4;
-      cursor: ew-resize;
+    }
+
+    .compare-handle-knob {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
       display: flex;
       align-items: center;
       justify-content: center;
+      gap: 4px;
+      font-size: 16px;
+      color: #444;
+      font-weight: 600;
+      user-select: none;
+      pointer-events: auto; /* 드래그/클릭 가능 */
     }
-    /* 동그라미 핸들 */
-    .compare-handle-grip {
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: #ffffff;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.35);
-      border: 2px solid rgba(0,0,0,0.3);
+
+    .compare-handle-knob span {
+      line-height: 1;
+    }
+
+    .compare-handle-divider {
+      opacity: 0.5;
     }
 
     .comparison-label {
@@ -540,7 +566,15 @@
 
           <!-- 가운데 세로 슬라이더 핸들 (동그라미) -->
           <div class="compare-handle" id="compare-handle">
-            <div class="compare-handle-grip"></div>
+            <!-- 중앙 세로 라인 -->
+            <div class="compare-handle-line"></div>
+
+            <!-- 동그라미 <|> 핸들 -->
+            <div class="compare-handle-knob">
+              <span>&lt;</span>
+              <span class="compare-handle-divider">|</span>
+              <span>&gt;</span>
+            </div>
           </div>
         </div>
 
