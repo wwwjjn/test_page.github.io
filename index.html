@@ -89,7 +89,12 @@
         rightLabel: "Ours",
         leftSrc:  "static/videos/carousel2.mp4",
         rightSrc: "static/videos/carousel1.mp4"
-      }
+      },
+      moreResultsVideos: [
+      { label: "More Result · View 1", src: "static/videos/carousel1.mp4" },
+      { label: "More Result · View 2", src: "static/videos/carousel2.mp4" },
+      { label: "More Result · View 3", src: "static/videos/carousel3.mp4" }
+    ]
     };
   </script>
 
@@ -537,26 +542,23 @@
   </section>
 
   <!-- MORE VIDEOS -->
-  <section class="hero is-small" id="more-videos">
-    <div class="hero-body">
-      <div class="container">
-        <h2 class="title is-3">More Results</h2>
-        <div id="results-carousel-2" class="carousel results-carousel">
-          <div class="item item-video1">
-            <video id="video1" muted loop playsinline height="100%" preload="metadata">
-              <source src="static/videos/carousel1.mp4" type="video/mp4">
-            </video>
-          </div>
-          <div class="item item-video2">
-            <video id="video2" muted loop playsinline height="100%" preload="metadata">
-              <source src="static/videos/carousel2.mp4" type="video/mp4">
-            </video>
-          </div>
-          <div class="item item-video3">
-            <video id="video3" muted loop playsinline height="100%" preload="metadata">
-              <source src="static/videos/carousel3.mp4" type="video/mp4">
-            </video>
-          </div>
+  <section class="section" id="more-videos">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">More Results</h2>
+
+      <div class="results-main-wrapper">
+        <!-- 메인 비디오 -->
+        <video id="more-results-main"
+               class="results-main-image"
+               muted loop playsinline preload="metadata">
+          <source id="more-results-main-source"
+                  src="static/videos/carousel1.mp4"
+                  type="video/mp4">
+        </video>
+
+        <!-- 텍스트 배너 썸네일들 (JS가 채움) -->
+        <div class="results-thumbs" id="more-results-thumbs-container">
+          <!-- JS에서 PAGE_CONFIG.moreResultsVideos로 채워짐 -->
         </div>
       </div>
     </div>
@@ -762,6 +764,7 @@
     /* ===== Results: PAGE_CONFIG.results → 텍스트 배너 ===== */
     const mainResultImage = document.getElementById('result-main');
     const thumbsContainer = document.getElementById('results-thumbs-container');
+    
 
     if (mainResultImage && thumbsContainer && Array.isArray(cfg.results) && cfg.results.length) {
       mainResultImage.src = cfg.results[0].image;
@@ -779,6 +782,46 @@
           const imgPath = btn.dataset.image;
           if (imgPath) mainResultImage.src = imgPath;
           resultThumbs.forEach(b => b.classList.remove('is-active'));
+          btn.classList.add('is-active');
+        });
+      });
+    }
+    /* ====== 4. More Results: 비디오 + 텍스트 썸네일 ====== */
+    const moreMainVideo = document.getElementById('more-results-main');
+    const moreMainSource = document.getElementById('more-results-main-source');
+    const moreThumbsContainer = document.getElementById('more-results-thumbs-container');
+
+    if (moreMainVideo && moreMainSource &&
+        moreThumbsContainer &&
+        Array.isArray(cfg.moreResultsVideos) &&
+        cfg.moreResultsVideos.length) {
+
+      // 초기 비디오를 첫 항목으로 설정
+      moreMainSource.src = cfg.moreResultsVideos[0].src;
+      moreMainVideo.load();
+
+      // 텍스트 배너들 생성
+      moreThumbsContainer.innerHTML = cfg.moreResultsVideos.map((r, idx) => `
+        <button class="result-thumb ${idx === 0 ? 'is-active' : ''}"
+                data-src="${r.src}">
+          <div class="result-thumb-inner">
+            <span class="tag is-medium is-rounded is-light">${r.label}</span>
+          </div>
+        </button>
+      `).join('');
+
+      const moreThumbButtons =
+        Array.from(moreThumbsContainer.querySelectorAll('.result-thumb'));
+
+      moreThumbButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const src = btn.dataset.src;
+          if (src) {
+            // 비디오 소스 교체 + 다시 로드
+            moreMainSource.src = src;
+            moreMainVideo.load();
+          }
+          moreThumbButtons.forEach(b => b.classList.remove('is-active'));
           btn.classList.add('is-active');
         });
       });
