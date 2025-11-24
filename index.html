@@ -499,7 +499,7 @@
     <div class="container is-max-desktop">
       <div class="columns is-centered">
         <div class="column">
-          <h2 class="title is-3 has-text-centered">Interactive 3D / 4D Viewer</h2>
+          <h2 class="title is-3 has-text-centered">Interactive 3D Viewer</h2>
 
           <model-viewer id="mv-4d"
                         src=""
@@ -520,6 +520,46 @@
       </div>
     </div>
   </section>
+
+   <!-- 4D GAUSSIAN POINT CLOUD VIEWER -->
+  <section class="section" id="gaussian-4d-viewer">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column">
+          <h2 class="title is-3 has-text-centered">4D Gaussian Point Cloud Viewer</h2>
+
+          <!-- three.js 캔버스가 들어갈 영역 -->
+          <div id="gs4d-viewer"
+               style="width: 100%; height: 480px; background:#000; border-radius:12px;">
+          </div>
+
+          <!-- frame 슬라이더 + 재생 버튼 -->
+          <div class="field is-grouped is-align-items-center mt-3">
+            <div class="control">
+              <span id="gs4d-frame-label"
+                    class="has-text-grey-light is-size-7">frame: 0</span>
+            </div>
+            <div class="control is-expanded">
+              <input id="gs4d-frame-slider"
+                     class="slider is-fullwidth is-small"
+                     step="1" min="0" max="19" value="0" type="range">
+            </div>
+            <div class="control">
+              <button id="gs4d-play-pause"
+                      class="button is-small is-dark">▶</button>
+            </div>
+          </div>
+
+          <p class="has-text-grey is-size-7 mt-1">
+            PLY files are loaded from
+            <code>static/gaussian_pertimestamp/time_00000.ply</code> …
+            <code>time_00019.ply</code>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
 
   <!-- RESULTS (images with text tabs) -->
   <section class="section" id="results">
@@ -998,6 +1038,167 @@
       });
     }
   });
+</script>
+<script type="module">
+  import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
+  import { OrbitControls } from "https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js";
+  import { PLYLoader } from "https://unpkg.com/three@0.160.0/examples/jsm/loaders/PLYLoader.js";
+
+  const container   = document.getElementById("gs4d-viewer");
+  const frameLabel  = document.getElementById("gs4d-frame-label");
+  const frameSlider = document.getElementById("gs4d-frame-slider");
+  const playBtn     = document.getElementById("gs4d-play-pause");
+
+  if (container && frameLabel && frameSlider && playBtn) {
+    // ===== 기본 three.js 세팅 =====
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x000000);
+
+    const rect = container.getBoundingClientRect();
+    let width  = rect.width  || 800;
+    let height = rect.height || 480;
+
+    const camera = new THREE.PerspectiveCamera(45, width / height, 0.01, 1000);
+    camera.position.set(0, 0, 3);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(width, height);
+    container.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+
+    const light = new THREE.DirectionalLight(0xffffff, 1.0);
+    light.position.set(1, 1, 1);
+    scene.add(light);
+
+    // ===== PLY 프레임 리스트 =====
+    const FRAME_COUNT  = 20; // time_00000 ~ time_00019
+    const FRAME_BASE   = "static/gaussian_pertimestamp";
+    const FRAME_FILES  = [];
+
+    for (let i = 0; i < FRAME_COUNT; i++) {
+      const name = `${FRAME_BASE}/time_${String(i).padStart(5, "0")}.ply`;
+      FRAME_FILES.push(name);
+    }
+
+    const loader  = new PLYLoader();
+    const frames  = new Array(FRAME_COUNT).fill(null);
+    let current   = 0;
+    let loadedNum = 0;
+
+    function updateLabel(idx) {
+      frameLabel.textContent = `frame: ${idx}`;
+    }
+
+    function loadFrame(idx) {
+      const url = FRAME_FILES[idx];
+      loader.load(
+        url,
+        (geometry) => {
+          // 점 구름으로 렌더링 (색 정보 없으면 흰 점)
+          geometry.computeBoundingSphere();
+          geometry.center();
+
+          const material = new THREE.PointsMaterial({
+            size: 0.01,        // 필요하면 점 크기 조절
+            sizeAttenuation: true,
+          });
+
+          const points = new THREE.Points(geometry, material);
+          points.visible = false;
+          scene.add(points);
+
+          frames[idx] = points;
+          loadedNum++;
+
+          // 첫 프레임 로딩 시 카메라 위치 세팅 + 표시
+          if (idx === 0) {
+            points.visible = true;
+            current = 0;
+            updateLabel(0);
+
+            const bs = geometry.boundingSphere;
+            if (bs && bs.radius > 0) {
+              camera.position.set(0, 0, bs.radius * 3.0);
+              camera.lookAt(0, 0, 0);
+            }
+          }
+
+          console.log(`Loaded frame ${idx}: ${url}`);
+        },
+        undefined,
+        (err) => {
+          console.error(`Error loading ${url}`, err);
+        }
+      );
+    }
+
+    // 모든 프레임 로딩 시작
+    for (let i = 0; i < FRAME_COUNT; i++) {
+      loadFrame(i);
+    }
+
+    function showFrame(idx) {
+      if (idx < 0 || idx >= FRAME_COUNT) return;
+      if (!frames[idx]) {
+        // 아직 안 로드된 프레임이면 그냥 무시
+        console.warn("Frame not loaded yet:", idx);
+        return;
+      }
+      if (frames[current]) {
+        frames[current].visible = false;
+      }
+      frames[idx].visible = true;
+      current = idx;
+      frameSlider.value = String(idx);
+      updateLabel(idx);
+    }
+
+    // ===== 슬라이더 & 재생 컨트롤 =====
+    frameSlider.addEventListener("input", () => {
+      const idx = parseInt(frameSlider.value, 10);
+      showFrame(idx);
+    });
+
+    let playing  = false;
+    let lastTime = 0;
+    const playbackFPS = 10; // 초당 10프레임
+
+    playBtn.addEventListener("click", () => {
+      playing = !playing;
+      playBtn.textContent = playing ? "⏸" : "▶";
+    });
+
+    // ===== 렌더 루프 =====
+    function animate(timestamp) {
+      requestAnimationFrame(animate);
+
+      if (playing && loadedNum > 0) {
+        const dt = (timestamp - lastTime) / 1000.0;
+        if (dt > 1.0 / playbackFPS) {
+          lastTime = timestamp;
+          const next = (current + 1) % FRAME_COUNT;
+          showFrame(next);
+        }
+      }
+
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    animate(0);
+
+    // ===== 리사이즈 대응 =====
+    window.addEventListener("resize", () => {
+      const r = container.getBoundingClientRect();
+      width  = r.width  || width;
+      height = r.height || height;
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+    });
+  }
 </script>
 
 </body>
