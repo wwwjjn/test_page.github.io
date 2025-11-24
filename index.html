@@ -84,7 +84,6 @@
       links: {
         pdf:  "https://YOUR_PDF_LINK.pdf",
         arxiv:"https://arxiv.org/abs/ARXIV_ID",
-        openreview:"https://openreview.net/forum?id=OPENREVIEW_ID",
         code:"https://github.com/YOUR_REPO_HERE",
         supp:"static/pdfs/supplementary_material.pdf"
       },
@@ -415,13 +414,6 @@
                   </a>
                 </span>
                 <span class="link-block">
-                  <a id="link-openreview" href="#" target="_blank"
-                     class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon"><i class="fas fa-comments"></i></span>
-                    <span>OpenReview</span>
-                  </a>
-                </span>
-                <span class="link-block">
                   <a id="link-code" href="#" target="_blank"
                      class="external-link button is-normal is-rounded is-dark">
                     <span class="icon"><i class="fab fa-github"></i></span>
@@ -626,7 +618,7 @@
       </div>
     </div>
   </section>
-  
+
   <!-- BIBTEX -->
   <section class="section" id="BibTeX">
     <div class="container is-max-desktop content">
@@ -729,7 +721,6 @@
       };
       setHref('link-pdf', cfg.links.pdf);
       setHref('link-arxiv', cfg.links.arxiv);
-      setHref('link-openreview', cfg.links.openreview);
       setHref('link-code', cfg.links.code);
       setHref('link-supp', cfg.links.supp);
     }
