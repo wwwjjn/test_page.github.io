@@ -556,7 +556,7 @@
       </div>
     </div>
   </section>
-  
+
   <!-- RESULTS (images with text tabs) -->
   <section class="section" id="results">
     <div class="container is-max-desktop">
@@ -1036,23 +1036,28 @@
   });
 </script>
 <script type="module">
-  import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
-  import { OrbitControls } from "https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js";
-  import { PLYLoader } from "https://unpkg.com/three@0.160.0/examples/jsm/loaders/PLYLoader.js";
+  import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js?module";
+  import { OrbitControls } from "https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js?module";
+  import { PLYLoader } from "https://unpkg.com/three@0.160.0/examples/jsm/loaders/PLYLoader.js?module";
 
-  const container   = document.getElementById("gs4d-viewer");
-  const frameLabel  = document.getElementById("gs4d-frame-label");
-  const frameSlider = document.getElementById("gs4d-frame-slider");
-  const playBtn     = document.getElementById("gs4d-play-pause");
+  window.addEventListener("DOMContentLoaded", () => {
+    const container   = document.getElementById("gs4d-viewer");
+    const frameLabel  = document.getElementById("gs4d-frame-label");
+    const frameSlider = document.getElementById("gs4d-frame-slider");
+    const playBtn     = document.getElementById("gs4d-play-pause");
 
-  if (container && frameLabel && frameSlider && playBtn) {
+    if (!container || !frameLabel || !frameSlider || !playBtn) {
+      console.warn("4D viewer elements not found");
+      return;
+    }
+
     // ===== 기본 three.js 세팅 =====
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x000000);
 
     const rect = container.getBoundingClientRect();
     let width  = rect.width  || 800;
-    let height = rect.height || 480;
+    let height = rect.height || 420;
 
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.01, 1000);
     camera.position.set(0, 0, 3);
@@ -1070,9 +1075,9 @@
     scene.add(light);
 
     // ===== PLY 프레임 리스트 =====
-    const FRAME_COUNT  = 20; // time_00000 ~ time_00019
-    const FRAME_BASE   = "static/gaussian_pertimestamp";
-    const FRAME_FILES  = [];
+    const FRAME_COUNT = 20; // time_00000 ~ time_00019
+    const FRAME_BASE  = "static/gaussian_pertimestamp";
+    const FRAME_FILES = [];
 
     for (let i = 0; i < FRAME_COUNT; i++) {
       const name = `${FRAME_BASE}/time_${String(i).padStart(5, "0")}.ply`;
@@ -1093,12 +1098,11 @@
       loader.load(
         url,
         (geometry) => {
-          // 점 구름으로 렌더링 (색 정보 없으면 흰 점)
           geometry.computeBoundingSphere();
           geometry.center();
 
           const material = new THREE.PointsMaterial({
-            size: 0.01,        // 필요하면 점 크기 조절
+            size: 0.01,
             sizeAttenuation: true,
           });
 
@@ -1109,7 +1113,6 @@
           frames[idx] = points;
           loadedNum++;
 
-          // 첫 프레임 로딩 시 카메라 위치 세팅 + 표시
           if (idx === 0) {
             points.visible = true;
             current = 0;
@@ -1131,7 +1134,6 @@
       );
     }
 
-    // 모든 프레임 로딩 시작
     for (let i = 0; i < FRAME_COUNT; i++) {
       loadFrame(i);
     }
@@ -1139,7 +1141,6 @@
     function showFrame(idx) {
       if (idx < 0 || idx >= FRAME_COUNT) return;
       if (!frames[idx]) {
-        // 아직 안 로드된 프레임이면 그냥 무시
         console.warn("Frame not loaded yet:", idx);
         return;
       }
@@ -1160,7 +1161,7 @@
 
     let playing  = false;
     let lastTime = 0;
-    const playbackFPS = 10; // 초당 10프레임
+    const playbackFPS = 10;
 
     playBtn.addEventListener("click", () => {
       playing = !playing;
@@ -1194,7 +1195,7 @@
       camera.updateProjectionMatrix();
       renderer.setSize(width, height);
     });
-  }
+  });
 </script>
 
 </body>
