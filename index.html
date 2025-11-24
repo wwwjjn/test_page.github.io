@@ -64,13 +64,25 @@
      ========================= -->
   <script>
     window.PAGE_CONFIG = {
+      /* --------- 기본 메타/텍스트 --------- */
       paperTitle: "VDSL 3D team Template",
+      paperDescription: "BRIEF_DESCRIPTION_OF_YOUR_RESEARCH_CONTRIBUTION_AND_FINDINGS",
+      keywords: ["KEYWORD1", "KEYWORD2", "KEYWORD3", "machine learning", "computer vision", "AI"],
+      institution: "Sogang University",
+      conference: "Conference name",
+      year: "2024",
+
+      /* HERO 아래 한 줄 (institution + conference + year 조합해서 써도 됨) */
       paperSubtitle: "Sogang University<br>Conference name and year",
+
+      /* 저자 정보 */
       authors: [
         { name: "Suwoong Yeom",  link: "FIRST AUTHOR PERSONAL LINK",  equal: true },
         { name: "Joonsik Nam",   link: "SECOND AUTHOR PERSONAL LINK", equal: true },
         { name: "Seunggyu Choi", link: "THIRD AUTHOR PERSONAL LINK",  equal: false }
       ],
+
+      /* Paper / Code 링크 */
       links: {
         pdf:  "https://YOUR_PDF_LINK.pdf",
         arxiv:"https://arxiv.org/abs/ARXIV_ID",
@@ -78,23 +90,60 @@
         code:"https://github.com/YOUR_REPO_HERE",
         supp:"static/pdfs/supplementary_material.pdf"
       },
+
+      /* Teaser 영상 + 캡션 */
+      teaser: {
+        src: "static/videos/banner_video.mp4",
+        caption: "One-line teaser describing the main result of the paper."
+      },
+
+      /* Abstract: 간단 HTML 허용 */
+      abstractHtml: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ullamcorper tellus sed ante aliquam tempus. (Put your paper abstract here.)",
+
+      /* Model Overview 이미지 + 캡션 */
+      modelOverview: {
+        image: "static/images/carousel1.jpg",
+        caption: "Brief caption describing the overall architecture or pipeline."
+      },
+
+      /* 3D Viewer glb 경로 */
+      viewerModelSrc: "static/model/glbscene_50_All_maskbFalse_maskwFalse_camTrue_skyFalse_predDepthmap_and_Camera_Branch.glb",
+
+      /* Results 섹션 이미지들 */
       results: [
         { label: "Scene 1 · Baseline vs Ours", image: "static/images/carousel1.jpg" },
         { label: "Scene 2 · View Synthesis",   image: "static/images/carousel2.jpg" },
         { label: "Scene 3 · Relighting",       image: "static/images/carousel3.jpg" },
         { label: "Scene 4 · Novel View",       image: "static/images/carousel4.jpg" }
       ],
+
+      /* Qualitative 비교용 왼/오 영상 + 라벨 */
       videoCompare: {
         leftLabel:  "Baseline",
         rightLabel: "Ours",
         leftSrc:  "static/videos/carousel2.mp4",
         rightSrc: "static/videos/carousel1.mp4"
       },
+
+      /* More Results: 비디오 리스트 */
       moreResultsVideos: [
-      { label: "More Result · View 1", src: "static/videos/carousel1.mp4" },
-      { label: "More Result · View 2", src: "static/videos/carousel2.mp4" },
-      { label: "More Result · View 3", src: "static/videos/carousel3.mp4" }
-    ]
+        { label: "More Result · View 1", src: "static/videos/carousel1.mp4" },
+        { label: "More Result · View 2", src: "static/videos/carousel2.mp4" },
+        { label: "More Result · View 3", src: "static/videos/carousel3.mp4" }
+      ],
+
+      /* YouTube 발표 영상 */
+      youtubeId: "JkaxUblCGz0",
+
+      /* BibTeX 정보 */
+      bibtex: {
+        key: "YourPaperKey2024",
+        title: "Your Paper Title Here",
+        authors: "First Author and Second Author and Third Author",
+        venue: "Conference/Journal Name",
+        year: "2024",
+        url: "https://your-domain.com/your-project-page"
+      }
     };
   </script>
 
@@ -229,12 +278,14 @@
       align-items: center;
       justify-content: center;
     }
+    /* 동그라미 핸들 */
     .compare-handle-grip {
-      width: 20px;
-      height: 40px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.9);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #ffffff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+      border: 2px solid rgba(0,0,0,0.3);
     }
 
     .comparison-label {
@@ -290,25 +341,6 @@
     .result-thumb-inner img { display: none; }
     .result-thumb.is-active .result-thumb-inner {
       border-color: #3273dc;
-    }
-    .video-side-label {
-      position: absolute;
-      top: 12px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: rgba(0, 0, 0, 0.65);
-      color: #fff;
-      font-size: 0.85rem;
-      z-index: 4;
-      pointer-events: none; /* 드래그/클릭 방해 안 하도록 */
-    }
-
-    .video-side-label-left {
-      left: 16px;
-    }
-
-    .video-side-label-right {
-      right: 16px;
     }
   </style>
 </head>
@@ -395,7 +427,7 @@
         <video poster="" id="teaser-video" muted loop playsinline preload="metadata" autoplay>
           <source src="static/videos/banner_video.mp4" type="video/mp4">
         </video>
-        <h2 class="subtitle has-text-centered">
+        <h2 class="subtitle has-text-centered" id="teaser-caption">
           One-line teaser describing the main result of the paper.
         </h2>
       </div>
@@ -409,7 +441,7 @@
         <div class="column is-four-fifths">
           <h2 class="title is-3">Abstract</h2>
           <div class="content has-text-justified">
-            <p>
+            <p id="abstract-text">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ullamcorper
               tellus sed ante aliquam tempus. (Put your paper abstract here.)
             </p>
@@ -426,10 +458,12 @@
         <div class="column">
           <h2 class="title is-3 has-text-centered">Model Overview</h2>
           <figure class="image">
-            <img src="static/images/carousel1.jpg"
+            <img id="model-overview-image"
+                 src="static/images/carousel1.jpg"
                  alt="Model overview figure"
                  loading="lazy">
-            <figcaption class="has-text-centered has-text-grey is-size-6 mt-3">
+            <figcaption class="has-text-centered has-text-grey is-size-6 mt-3"
+                        id="model-overview-caption">
               Brief caption describing the overall architecture or pipeline.
             </figcaption>
           </figure>
@@ -506,16 +540,16 @@
             Ours
           </span>
 
-          <!-- 가운데 세로 슬라이더 핸들 -->
+          <!-- 가운데 세로 슬라이더 핸들 (동그라미) -->
           <div class="compare-handle" id="compare-handle">
             <div class="compare-handle-grip"></div>
           </div>
         </div>
 
-        <!-- 영상 아래쪽 작은 캡션 (원하면 지워도 됨) -->
+        <!-- 영상 아래쪽 작은 캡션 -->
         <div class="is-flex is-justify-content-space-between mt-2 is-size-7 has-text-grey">
-          <span>Baseline</span>
-          <span>Ours</span>
+          <span id="video-left-caption">Baseline</span>
+          <span id="video-right-caption">Ours</span>
         </div>
       </div>
     </div>
@@ -529,7 +563,8 @@
         <div class="columns is-centered has-text-centered">
           <div class="column is-four-fifths">
             <div class="publication-video">
-              <iframe src="https://www.youtube.com/embed/JkaxUblCGz0"
+              <iframe id="video-presentation-iframe"
+                      src="https://www.youtube.com/embed/JkaxUblCGz0"
                       frameborder="0"
                       allow="autoplay; encrypted-media"
                       allowfullscreen>
@@ -617,18 +652,28 @@
   document.addEventListener('DOMContentLoaded', () => {
     const cfg = window.PAGE_CONFIG || {};
 
-    /* ===== 헤더 타이틀 / 저자 / 링크 ===== */
+    /* ===== 메타/타이틀 ===== */
     if (cfg.paperTitle) {
       document.querySelectorAll('.publication-title')
         .forEach(n => n.textContent = cfg.paperTitle);
       document.title = cfg.paperTitle;
     }
+    if (cfg.paperDescription) {
+      const d = document.querySelector('meta[name="description"]');
+      if (d) d.setAttribute('content', cfg.paperDescription);
+    }
+    if (Array.isArray(cfg.keywords)) {
+      const k = document.querySelector('meta[name="keywords"]');
+      if (k) k.setAttribute('content', cfg.keywords.join(', '));
+    }
 
+    /* ===== Hero subtitle ===== */
     if (cfg.paperSubtitle) {
       const subtitleNode = document.getElementById('paper-subtitle');
       if (subtitleNode) subtitleNode.innerHTML = cfg.paperSubtitle;
     }
 
+    /* ===== Authors ===== */
     if (Array.isArray(cfg.authors)) {
       const authorsContainer = document.getElementById('authors-container');
       if (authorsContainer) {
@@ -648,6 +693,7 @@
       }
     }
 
+    /* ===== 링크들 ===== */
     if (cfg.links) {
       const setHref = (id, url) => {
         const el = document.getElementById(id);
@@ -660,26 +706,61 @@
       setHref('link-supp', cfg.links.supp);
     }
 
-    /* ===== 모든 video: 클릭하면 play/pause ===== */
+    /* ===== Teaser video / caption ===== */
+    const teaserVideo = document.getElementById('teaser-video');
+    if (cfg.teaser) {
+      if (teaserVideo && cfg.teaser.src) {
+        const s = teaserVideo.querySelector('source');
+        if (s) { s.src = cfg.teaser.src; teaserVideo.load(); }
+      }
+      const teaserCap = document.getElementById('teaser-caption');
+      if (teaserCap && cfg.teaser.caption) {
+        teaserCap.textContent = cfg.teaser.caption;
+      }
+    }
+
+    /* ===== Abstract ===== */
+    if (cfg.abstractHtml) {
+      const absNode = document.getElementById('abstract-text');
+      if (absNode) absNode.innerHTML = cfg.abstractHtml;
+    }
+
+    /* ===== Model overview image & caption ===== */
+    const moImg = document.getElementById('model-overview-image');
+    const moCap = document.getElementById('model-overview-caption');
+    if (cfg.modelOverview) {
+      if (moImg && cfg.modelOverview.image) {
+        moImg.src = cfg.modelOverview.image;
+      }
+      if (moCap && cfg.modelOverview.caption) {
+        moCap.textContent = cfg.modelOverview.caption;
+      }
+    }
+
+    /* ===== 3D viewer src ===== */
+    if (cfg.viewerModelSrc) {
+      const mv = document.getElementById('mv-4d');
+      if (mv) mv.setAttribute('src', cfg.viewerModelSrc);
+    }
+
+    /* ===== 모든 video: 클릭하면 play/pause (비교용 2개는 아래 별도) ===== */
     const vLeft = document.getElementById('video-left');
     const vRight = document.getElementById('video-right');
-
     const allVideos = Array.from(document.querySelectorAll('video'));
     allVideos.forEach(v => {
-      // 비교용 두 영상은 따로 핸들링
       if (v === vLeft || v === vRight) return;
       v.addEventListener('click', () => {
         if (v.paused) v.play(); else v.pause();
       });
     });
 
-    /* ===== Video comparison: src/label을 CONFIG에서 ===== */
+    /* ===== Qualitative video comparison: src/label을 CONFIG에서 ===== */
     if (cfg.videoCompare) {
       const vc = cfg.videoCompare;
       const leftLabel = document.getElementById('video-left-label');
       const rightLabel = document.getElementById('video-right-label');
-      const leftOverlay = document.getElementById('video-left-label-overlay');
-      const rightOverlay = document.getElementById('video-right-label-overlay');
+      const leftCaption = document.getElementById('video-left-caption');
+      const rightCaption = document.getElementById('video-right-caption');
 
       if (vLeft && vc.leftSrc) {
         const s = vLeft.querySelector('source');
@@ -691,8 +772,8 @@
       }
       if (leftLabel && vc.leftLabel) leftLabel.textContent = vc.leftLabel;
       if (rightLabel && vc.rightLabel) rightLabel.textContent = vc.rightLabel;
-      if (leftOverlay && vc.leftLabel) leftOverlay.textContent = vc.leftLabel;
-      if (rightOverlay && vc.rightLabel) rightOverlay.textContent = vc.rightLabel;
+      if (leftCaption && vc.leftLabel) leftCaption.textContent = vc.leftLabel;
+      if (rightCaption && vc.rightLabel) rightCaption.textContent = vc.rightLabel;
     }
 
     /* ===== 2-way slider 드래그 + 두 영상 동기 재생 ===== */
@@ -764,7 +845,6 @@
     /* ===== Results: PAGE_CONFIG.results → 텍스트 배너 ===== */
     const mainResultImage = document.getElementById('result-main');
     const thumbsContainer = document.getElementById('results-thumbs-container');
-    
 
     if (mainResultImage && thumbsContainer && Array.isArray(cfg.results) && cfg.results.length) {
       mainResultImage.src = cfg.results[0].image;
@@ -786,7 +866,8 @@
         });
       });
     }
-     /* ====== 4. More Results: 비디오 + 텍스트 썸네일 ====== */
+
+    /* ===== More Results: 비디오 + 텍스트 썸네일 ===== */
     const moreMainVideo       = document.getElementById('more-results-main');
     const moreMainSource      = document.getElementById('more-results-main-source');
     const moreThumbsContainer = document.getElementById('more-results-thumbs-container');
@@ -799,7 +880,6 @@
 
       const vids = cfg.moreResultsVideos;
 
-      // 메인 비디오 src 세팅 + (옵션) 자동 재생
       const setMainVideo = (src, autoplay = true) => {
         moreMainSource.src = src;
         moreMainVideo.load();
@@ -808,10 +888,9 @@
         }
       };
 
-      // 초기 상태: 첫 번째 비디오로
+      // 초기 상태: 첫 번째 비디오
       setMainVideo(vids[0].src, false);
 
-      // 텍스트 썸네일 생성
       moreThumbsContainer.innerHTML = vids.map((r, idx) => `
         <button class="result-thumb ${idx === 0 ? 'is-active' : ''}"
                 data-src="${r.src}">
@@ -827,19 +906,50 @@
       thumbButtons.forEach(btn => {
         btn.addEventListener('click', () => {
           const src = btn.dataset.src;
-          if (src) {
-            setMainVideo(src);
-          }
+          if (src) setMainVideo(src);
           thumbButtons.forEach(b => b.classList.remove('is-active'));
           btn.classList.add('is-active');
         });
       });
 
-      // 메인 비디오 클릭하면 재생/일시정지 토글
       moreMainVideo.addEventListener('click', () => {
         if (moreMainVideo.paused) moreMainVideo.play();
         else moreMainVideo.pause();
       });
+    }
+
+    /* ===== YouTube 발표 영상 ===== */
+    if (cfg.youtubeId) {
+      const iframe = document.getElementById('video-presentation-iframe');
+      if (iframe) {
+        iframe.src = `https://www.youtube.com/embed/${cfg.youtubeId}`;
+      }
+    }
+
+    /* ===== BibTeX 생성 ===== */
+    if (cfg.bibtex) {
+      const codeNode = document.querySelector('#bibtex-code code');
+      if (codeNode) {
+        const b = cfg.bibtex;
+        const key = b.key || ('Paper' + (cfg.year || ''));
+        const title = b.title || cfg.paperTitle || '';
+        const authors =
+          b.authors ||
+          (Array.isArray(cfg.authors)
+            ? cfg.authors.map(a => a.name).join(' and ')
+            : '');
+        const venue = b.venue || (cfg.conference || 'Conference/Journal Name');
+        const year = b.year || cfg.year || '';
+        const url = b.url || '';
+        const bib = `@article{${key},
+  title={${title}},
+  author={${authors}},
+  journal={${venue}},
+  year={${year}},
+  url={${url}}
+}`;
+        codeNode.textContent = bib;
+      }
     }
   });
 </script>
