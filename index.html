@@ -6,7 +6,6 @@
   
   <!-- =========================
        BASIC PAPER METADATA
-       → 새 논문마다 여기만 싹 바꾸면 됨
      ========================= -->
   <meta name="title" content="PAPER_TITLE - AUTHOR_NAMES">
   <meta name="description" content="BRIEF_DESCRIPTION_OF_YOUR_RESEARCH_CONTRIBUTION_AND_FINDINGS">
@@ -20,7 +19,6 @@
   <meta property="og:site_name" content="INSTITUTION_OR_LAB_NAME">
   <meta property="og:title" content="PAPER_TITLE">
   <meta property="og:description" content="BRIEF_DESCRIPTION_OF_YOUR_RESEARCH_CONTRIBUTION_AND_FINDINGS">
-  <!-- TODO: 1200x630 프리뷰 이미지 -->
   <meta property="og:image" content="https://YOUR_DOMAIN.com/static/images/social_preview.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -60,8 +58,6 @@
   <link rel="preconnect" href="https://ajax.googleapis.com">
   <link rel="preconnect" href="https://documentcloud.adobe.com">
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
-
-  <!-- Page Title -->
 
   <!-- TODO(TITLE: webpage에 노출되는 제목) -->
   <title>Paper Title</title>
@@ -178,6 +174,49 @@
       border-radius: 8px;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     }
+
+    /* 2-way video comparison slider */
+    .comparison-wrapper {
+      margin-top: 1.5rem;
+    }
+
+    .comparison-video-container {
+      position: relative;
+      width: 100%;
+      max-width: 960px;
+      margin: 0 auto;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+
+    .comparison-video-container .compare-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    #video-left {
+      z-index: 1;
+    }
+
+    #video-right {
+      z-index: 2;
+      clip-path: inset(0 0 0 50%); /* 초기: 절반만 보이기 */
+    }
+
+    .compare-handle {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 2px;
+      background-color: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4);
+      z-index: 3;
+    }
   </style>
 </head>
 <body>
@@ -187,7 +226,7 @@
     <i class="fas fa-chevron-up"></i>
   </button>
 
-
+  <main id="main-content">
 
   <!-- =========================
        HERO: Title / Authors / Links
@@ -201,22 +240,21 @@
 
             <!-- Authors -->
             <div class="is-size-5 publication-authors">
-              <!-- TODO: 저자 링크/이름 수정 -->
               <span class="author-block">
-                <a href="FIRST AUTHOR PERSONAL LINK" target="_blank">Kim VDSL</a><sup>*</sup>
+                <a href="FIRST AUTHOR PERSONAL LINK" target="_blank">Suwoong Yeom</a><sup>*</sup>
               </span>,
               <span class="author-block">
-                <a href="SECOND AUTHOR PERSONAL LINK" target="_blank">Lee VDSL</a><sup>*</sup>
+                <a href="SECOND AUTHOR PERSONAL LINK" target="_blank">Joonsik Nam</a><sup>*</sup>
               </span>,
               <span class="author-block">
-                <a href="THIRD AUTHOR PERSONAL LINK" target="_blank">Park VDSL</a>
+                <a href="THIRD AUTHOR PERSONAL LINK" target="_blank">Seunggyu Choi</a>
               </span>
             </div>
 
             <!-- Affiliation & venue -->
             <div class="is-size-5 publication-authors">
               <span class="author-block">
-                Sogang Univercity<br>Conference name and year
+                Sogang University<br>Conference name and year
               </span>
               <span class="eql-cntrb">
                 <small><br><sup>*</sup>Indicates Equal Contribution</small>
@@ -226,7 +264,6 @@
             <!-- Links: PDF / arXiv / OpenReview / Code -->
             <div class="column has-text-centered">
               <div class="publication-links">
-                <!-- PDF (카메라레디 등) -->
                 <span class="link-block">
                   <a href="https://YOUR_PDF_LINK.pdf" target="_blank"
                      class="external-link button is-normal is-rounded is-dark">
@@ -235,7 +272,6 @@
                   </a>
                 </span>
 
-                <!-- arXiv -->
                 <span class="link-block">
                   <a href="https://arxiv.org/abs/ARXIV_ID" target="_blank"
                      class="external-link button is-normal is-rounded is-dark">
@@ -244,7 +280,6 @@
                   </a>
                 </span>
 
-                <!-- OpenReview -->
                 <span class="link-block">
                   <a href="https://openreview.net/forum?id=OPENREVIEW_ID" target="_blank"
                      class="external-link button is-normal is-rounded is-dark">
@@ -253,7 +288,6 @@
                   </a>
                 </span>
 
-                <!-- Code -->
                 <span class="link-block">
                   <a href="https://github.com/YOUR_REPO_HERE" target="_blank"
                      class="external-link button is-normal is-rounded is-dark">
@@ -262,7 +296,6 @@
                   </a>
                 </span>
 
-                <!-- Supplementary (option) -->
                 <span class="link-block">
                   <a href="static/pdfs/supplementary_material.pdf" target="_blank"
                      class="external-link button is-normal is-rounded is-dark">
@@ -273,7 +306,7 @@
               </div>
             </div>
 
-          </div> <!-- column -->
+          </div>
         </div>
       </div>
     </div>
@@ -285,12 +318,11 @@
   <section class="hero teaser">
     <div class="container is-max-desktop">
       <div class="hero-body">
-        <video poster="" id="teaser-video" autoplay controls muted loop height="100%" preload="metadata">
-          <!-- TODO: 티저 영상 경로 -->
+        <!-- controls 제거: 클릭 토글로만 재생/정지 -->
+        <video poster="" id="teaser-video" muted loop playsinline preload="metadata">
           <source src="static/videos/banner_video.mp4" type="video/mp4">
         </video>
         <h2 class="subtitle has-text-centered">
-          <!-- TODO: 한 줄짜리 티저 설명 -->
           One-line teaser describing the main result of the paper.
         </h2>
       </div>
@@ -306,7 +338,6 @@
         <div class="column is-four-fifths">
           <h2 class="title is-3">Abstract</h2>
           <div class="content has-text-justified">
-            <!-- TODO: 실제 abstract로 교체 -->
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ullamcorper
               tellus sed ante aliquam tempus. (Put your paper abstract here.)
@@ -326,7 +357,6 @@
         <div class="column">
           <h2 class="title is-3 has-text-centered">Model Overview</h2>
           <figure class="image">
-            <!-- TODO: model overview figure 경로 -->
             <img src="static/images/model_overview.png"
                  alt="Model overview figure"
                  loading="lazy">
@@ -348,7 +378,6 @@
         <div class="column">
           <h2 class="title is-3 has-text-centered">Interactive 3D / 4D Viewer</h2>
 
-          <!-- 애니메이션 포함 GLB를 이용한 time-varying 3D -->
           <model-viewer id="mv-4d"
                         src="static/models/model.glb"
                         alt="3D model"
@@ -372,7 +401,6 @@
       </div>
     </div>
   </section>
-
 
   <!-- =========================
        IMAGE CAROUSEL (RESULT FIGURES)
@@ -415,49 +443,38 @@
   </section>
 
   <!-- =========================
-       QUALITATIVE VIDEO RESULTS (좌/우 비교)
+       2-WAY VIDEO COMPARISON (SLIDER)
      ========================= -->
-  <section class="section" id="qualitative-video-results">
+  <section class="section" id="video-compare-slider">
     <div class="container is-max-desktop">
-      <h2 class="title is-3 has-text-centered">Qualitative Video Results</h2>
+      <h2 class="title is-3 has-text-centered">Qualitative Video Comparison</h2>
 
-
-      <!-- 1번째 샘플 -->
-      <div class="columns is-vcentered mt-5">
-        <!-- Left: Baseline -->
-        <div class="column is-6">
-          <h3 class="title is-5 has-text-centered">Baseline</h3>
-          <video class="qual-video" controls muted loop preload="metadata">
-            <source src="static/videos/sample1_baseline.mp4" type="video/mp4">
+      <div class="comparison-wrapper">
+        <div class="comparison-video-container">
+          <!-- Left: Baseline -->
+          <video id="video-left" class="compare-video" muted loop playsinline preload="metadata">
+            <source src="static/videos/compare_baseline.mp4" type="video/mp4">
           </video>
+
+          <!-- Right: Ours -->
+          <video id="video-right" class="compare-video" muted loop playsinline preload="metadata">
+            <source src="static/videos/compare_ours.mp4" type="video/mp4">
+          </video>
+
+          <!-- 중앙 세로 핸들 -->
+          <div class="compare-handle" id="compare-handle"></div>
         </div>
 
-        <!-- Right: Ours -->
-        <div class="column is-6">
-          <h3 class="title is-5 has-text-centered">Ours</h3>
-          <video class="qual-video" controls muted loop preload="metadata">
-            <source src="static/videos/sample1_ours.mp4" type="video/mp4">
-          </video>
+        <!-- 가로 슬라이더 -->
+        <div class="has-text-centered mt-3">
+          <input id="compare-slider" type="range" min="0" max="100" value="50" style="width: 80%;">
         </div>
-      </div>
 
-      <!-- 2번째 샘플 -->
-      <div class="columns is-vcentered mt-5">
-        <div class="column is-6">
-          <h3 class="title is-5 has-text-centered">Baseline</h3>
-          <video class="qual-video" controls muted loop preload="metadata">
-            <source src="static/videos/sample2_baseline.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="column is-6">
-          <h3 class="title is-5 has-text-centered">Ours</h3>
-          <video class="qual-video" controls muted loop preload="metadata">
-            <source src="static/videos/sample2_ours.mp4" type="video/mp4">
-          </video>
+        <div class="is-flex is-justify-content-space-between mt-2 is-size-7 has-text-grey">
+          <span>Baseline</span>
+          <span>Ours</span>
         </div>
       </div>
-
-      <!-- 필요하면 샘플 더 추가 -->
     </div>
   </section>
 
@@ -471,7 +488,6 @@
         <div class="columns is-centered has-text-centered">
           <div class="column is-four-fifths">
             <div class="publication-video">
-              <!-- TODO: 유튜브 비디오 ID 교체 -->
               <iframe src="https://www.youtube.com/embed/JkaxUblCGz0"
                       frameborder="0"
                       allow="autoplay; encrypted-media"
@@ -493,17 +509,17 @@
         <h2 class="title is-3">Additional Videos</h2>
         <div id="results-carousel-2" class="carousel results-carousel">
           <div class="item item-video1">
-            <video poster="" id="video1" controls muted loop height="100%" preload="metadata">
+            <video id="video1" muted loop playsinline height="100%" preload="metadata">
               <source src="static/videos/carousel1.mp4" type="video/mp4">
             </video>
           </div>
           <div class="item item-video2">
-            <video poster="" id="video2" controls muted loop height="100%" preload="metadata">
+            <video id="video2" muted loop playsinline height="100%" preload="metadata">
               <source src="static/videos/carousel2.mp4" type="video/mp4">
             </video>
           </div>
           <div class="item item-video3">
-            <video poster="" id="video3" controls muted loop height="100%" preload="metadata">
+            <video id="video3" muted loop playsinline height="100%" preload="metadata">
               <source src="static/videos/carousel3.mp4" type="video/mp4">
             </video>
           </div>
@@ -511,8 +527,6 @@
       </div>
     </div>
   </section>
-
-
 
   <!-- =========================
        BIBTEX
@@ -567,7 +581,7 @@
   </footer>
 
   <!-- =========================
-     INLINE SCRIPTS (4D viewer + Qual video controls)
+     INLINE SCRIPTS (4D viewer + video click toggle + 2-way compare)
    ========================= -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
@@ -578,7 +592,6 @@
 
     if (mv && slider) {
       mv.addEventListener('load', () => {
-        // autoplay 유지하고 싶으면 이 두 줄은 빼도 됨
         mv.pause();
         mv.currentTime = 0;
 
@@ -591,23 +604,36 @@
 
     /* ----- 모든 video: 클릭하면 개별 play/pause 토글 ----- */
     const videos = Array.from(document.querySelectorAll('video'));
+    videos.forEach(v => {
+      v.addEventListener('click', () => {
+        if (v.paused) {
+          v.play();
+        } else {
+          v.pause();
+        }
+      });
+    });
 
-    if (videos.length) {
-      videos.forEach(v => {
-        v.addEventListener('click', () => {
-          if (v.paused) {
-            v.play();
-          } else {
-            v.pause();
-          }
-        });
+    /* ----- 2-way video comparison slider ----- */
+    const compareSlider = document.getElementById('compare-slider');
+    const videoRight = document.getElementById('video-right');
+    const compareHandle = document.getElementById('compare-handle');
+
+    if (compareSlider && videoRight && compareHandle) {
+      const updateCompare = (value) => {
+        const v = parseFloat(value); // 0~100
+        videoRight.style.clipPath = `inset(0 0 0 ${100 - v}%)`;
+        compareHandle.style.left = `${v}%`;
+      };
+
+      updateCompare(compareSlider.value);
+
+      compareSlider.addEventListener('input', (e) => {
+        updateCompare(e.target.value);
       });
     }
   });
 </script>
-
-
-  <!-- Statcounter tracking code (원하면 여기 추가) -->
 
 </body>
 </html>
