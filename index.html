@@ -60,26 +60,20 @@
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
 
   <!-- =========================
-       PAGE CONFIG
-       → 이 부분만 수정해서 쓰면 됨
+       PAGE CONFIG (여기만 수정하면 됨)
      ========================= -->
   <script>
     window.PAGE_CONFIG = {
-      paperTitle: "VDSL 3D Team Template",
-      year: "2025",
+      paperTitle: "VDSL 3D team Template",
+      paperSubtitleHTML: "Sogang University<br>Conference name and year",
+      institutionLogo: "static/images/sogang_logo.png",   // 없으면 "" 로 두면 됨
+      institutionLogoAlt: "Sogang University logo",
 
       authors: [
         { name: "Suwoong Yeom",  link: "FIRST AUTHOR PERSONAL LINK",  equal: true },
         { name: "Joonsik Nam",   link: "SECOND AUTHOR PERSONAL LINK", equal: true },
         { name: "Seunggyu Choi", link: "THIRD AUTHOR PERSONAL LINK",  equal: true }
       ],
-
-      institution: {
-        name: "Sogang University",
-        icon: "static/images/sogang_symbol.png",  // 없으면 "" 로 두면 됨
-        iconAlt: "Sogang University",
-        conference: "ECCV 2026"
-      },
 
       links: {
         pdf:  "https://YOUR_PDF_LINK.pdf",
@@ -88,17 +82,12 @@
         supp:"static/pdfs/supplementary_material.pdf"
       },
 
-      teaserText: "One-line teaser describing the main result of the paper.",
-      abstractHTML: `
-        We propose <b>Awesome-3D-Method</b>, a novel framework for ...
-        Replace this string in <code>PAGE_CONFIG.abstractHTML</code>.
-      `,
+      // Teaser & model overview
+      teaserVideoSrc: "static/videos/banner_video.mp4",
+      modelOverviewImage: "static/images/carousel1.jpg",
+      modelOverviewCaption: "Brief caption describing the overall architecture or pipeline.",
 
-      modelOverview: {
-        image: "static/images/carousel1.jpg",
-        caption: "Brief caption describing the overall architecture or pipeline."
-      },
-
+      // Static result images
       results: [
         { label: "Scene 1 · Baseline vs Ours", image: "static/images/carousel1.jpg" },
         { label: "Scene 2 · View Synthesis",   image: "static/images/carousel2.jpg" },
@@ -106,54 +95,36 @@
         { label: "Scene 4 · Novel View",       image: "static/images/carousel4.jpg" }
       ],
 
-      /* ====== 3D INTERACTIVE VIEWER: 여러 glb 설정 ====== */
-      viewer3D: {
-        models: [
-          {
-            label: "Interactive Scene 1",
-            src: "static/model/glbscene_50_All_maskbFalse_maskwFalse_camTrue_skyFalse_predDepthmap_and_Camera_Branch.glb"
-          },
-          {
-            label: "Interactive Scene 2",
-            src: "static/model/another_scene.glb"
-          }
-        ]
-      },
+      // Interactive 3D viewer (model-viewer)
+      interactive3D: [
+        { label: "Scene 1 · 4D Avatar",  model: "static/model/model_scene1.glb" },
+        { label: "Scene 2 · Free-view", model: "static/model/model_scene2.glb" }
+      ],
 
-      /* ====== QUALITATIVE VIDEO COMPARISON: 여러 pair ====== */
+      // Qualitative video compare sets (slider)
       videoCompareSets: [
         {
-          label: "Scene 1 · Baseline vs Ours",
-          leftLabel:  "Baseline",
+          label: "Seq 1 · Baseline vs Ours",
+          leftLabel: "Baseline",
           rightLabel: "Ours",
-          leftSrc:  "static/videos/carousel2.mp4",
-          rightSrc: "static/videos/carousel1.mp4"
+          leftSrc: "static/videos/carousel2.mp4",
+          rightSrc:"static/videos/carousel1.mp4"
         },
         {
-          label: "Scene 2 · GT vs Ours",
-          leftLabel:  "Ground Truth",
+          label: "Seq 2 · Baseline vs Ours",
+          leftLabel: "Baseline",
           rightLabel: "Ours",
-          leftSrc:  "static/videos/carousel3.mp4",
-          rightSrc: "static/videos/carousel4.mp4"
+          leftSrc: "static/videos/carousel3.mp4",
+          rightSrc:"static/videos/carousel1.mp4"
         }
       ],
 
-      /* ====== MORE RESULTS 비디오 ====== */
+      // More Results (single video + text tabs)
       moreResultsVideos: [
         { label: "More Result · View 1", src: "static/videos/carousel1.mp4" },
         { label: "More Result · View 2", src: "static/videos/carousel2.mp4" },
         { label: "More Result · View 3", src: "static/videos/carousel3.mp4" }
-      ],
-
-      youtubeId: "JkaxUblCGz0",
-
-      bibtex: `@article{YourPaperKey2025,
-  title   = {Your Paper Title Here},
-  author  = {First Author and Second Author and Third Author},
-  journal = {Conference/Journal Name},
-  year    = {2025},
-  url     = {https://your-domain.com/your-project-page}
-}`
+      ]
     };
   </script>
 
@@ -208,7 +179,7 @@
         "affiliation": { "@type": "Organization", "name": "INSTITUTION_NAME" } }
     ],
     "datePublished": "2024-01-01",
-    "publisher": { "@type": "Organization", "name": "CONFERENCE_NAME" },
+    "publisher": { "@type": "Organization", "name": "CONFERENCE_OR_JOURNAL_NAME" },
     "url": "https://YOUR_DOMAIN.com/YOUR_PROJECT_PAGE",
     "image": "https://YOUR_DOMAIN.com/static/images/social_preview.png",
     "keywords": ["KEYWORD1", "KEYWORD2", "KEYWORD3", "machine learning", "computer vision"],
@@ -247,16 +218,11 @@
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     }
 
-    .institution-icon {
-      height: 22px;
-      margin-right: 6px;
-      vertical-align: middle;
-    }
-
     /* 2-way video comparison */
     .comparison-wrapper {
       margin-top: 1.5rem;
     }
+
     .comparison-video-container {
       position: relative;
       width: 100%;
@@ -267,6 +233,7 @@
       background: #000;
       aspect-ratio: 16 / 9;
     }
+
     .comparison-video-container .compare-video {
       position: absolute;
       inset: 0;
@@ -274,7 +241,9 @@
       height: 100%;
       object-fit: cover;
     }
+
     #video-left { z-index: 1; }
+
     #video-right {
       z-index: 2;
       clip-path: inset(0 0 0 50%);
@@ -285,11 +254,22 @@
       top: 0;
       bottom: 0;
       left: 50%;
-      width: 2px;
-      background-color: rgba(255, 255, 255, 0.9);
-      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4);
+      width: 40px;                /* 클릭 영역 */
+      transform: translateX(-50%);
       z-index: 4;
       cursor: ew-resize;
+    }
+
+    .compare-handle::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 2px;
+      transform: translateX(-50%);
+      background-color: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4);
     }
 
     .compare-handle-circle {
@@ -297,22 +277,22 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 32px;
-      height: 32px;
+      width: 38px;
+      height: 38px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.98);
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 6px;
+      padding: 0 7px;
+      box-sizing: border-box;
     }
 
-    .compare-handle-arrow {
-      font-size: 0.85rem;
+    .compare-handle-chev {
+      font-size: 16px;
       line-height: 1;
-      font-weight: 700;
-      color: #4a4a4a;
+      color: #444;
       user-select: none;
     }
 
@@ -336,16 +316,18 @@
       right: 16px;
     }
 
-    /* Results / thumbnails 공통 스타일 (이미지/비디오/3D 다 같이 사용) */
+    /* Results / thumbnails / tabs 공통 스타일 */
     .results-main-wrapper {
       max-width: 960px;
       margin: 0 auto;
     }
+
     .results-main-image {
       width: 100%;
       border-radius: 12px;
       box-shadow: 0 8px 24px rgba(0,0,0,0.15);
     }
+
     .results-thumbs {
       margin-top: 1rem;
       display: flex;
@@ -353,23 +335,33 @@
       justify-content: center;
       gap: 0.75rem;
     }
+
     .result-thumb {
       border: none;
       padding: 0;
       background: none;
       cursor: pointer;
     }
+
     .result-thumb-inner {
-      border-radius: 8px;
+      border-radius: 999px;
       overflow: hidden;
       border: 2px solid transparent;
-      padding: 0.35rem 0.75rem;
+      padding: 0.35rem 0.9rem;
       background: #fff;
+      white-space: nowrap;
     }
+
     .result-thumb.is-active .result-thumb-inner {
       border-color: #3273dc;
     }
 
+    /* Institution logo next to subtitle */
+    .institution-logo {
+      height: 1.4rem;
+      margin-right: 0.4rem;
+      vertical-align: text-bottom;
+    }
   </style>
 </head>
 <body>
@@ -394,8 +386,13 @@
             </div>
 
             <div class="is-size-5 publication-authors">
-              <span class="author-block" id="paper-subtitle">
-                <!-- JS에서 institution + icon 채움 -->
+              <span class="author-block">
+                <span id="institution-logo-wrapper">
+                  <img id="institution-logo" class="institution-logo" src="" alt="" style="display:none;">
+                </span>
+                <span id="paper-subtitle-text">
+                  Sogang University<br>Conference name and year
+                </span>
               </span>
               <span class="eql-cntrb" id="equal-contrib-note">
                 <small><br><sup>*</sup>Indicates Equal Contribution</small>
@@ -446,9 +443,9 @@
     <div class="container is-max-desktop">
       <div class="hero-body">
         <video poster="" id="teaser-video" muted loop playsinline preload="metadata" autoplay>
-          <source src="static/videos/banner_video.mp4" type="video/mp4">
+          <source id="teaser-video-source" src="static/videos/banner_video.mp4" type="video/mp4">
         </video>
-        <h2 class="subtitle has-text-centered" id="teaser-text">
+        <h2 class="subtitle has-text-centered">
           One-line teaser describing the main result of the paper.
         </h2>
       </div>
@@ -461,9 +458,10 @@
       <div class="columns is-centered has-text-centered">
         <div class="column is-four-fifths">
           <h2 class="title is-3">Abstract</h2>
-          <div class="content has-text-justified" id="abstract-content">
+          <div class="content has-text-justified">
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ullamcorper
+              tellus sed ante aliquam tempus. (Put your paper abstract here.)
             </p>
           </div>
         </div>
@@ -482,8 +480,8 @@
                  src="static/images/carousel1.jpg"
                  alt="Model overview figure"
                  loading="lazy">
-            <figcaption class="has-text-centered has-text-grey is-size-6 mt-3"
-                        id="model-overview-caption">
+            <figcaption id="model-overview-caption"
+                        class="has-text-centered has-text-grey is-size-6 mt-3">
               Brief caption describing the overall architecture or pipeline.
             </figcaption>
           </figure>
@@ -508,20 +506,21 @@
           </model-viewer>
 
           <p class="has-text-centered is-size-7 has-text-grey mt-3">
-            Click the tags below to switch between interactive scenes.
+            Put your animated <code>.glb</code>/<code>.gltf</code> files at
+            <code>static/model/...</code> and list them in <code>PAGE_CONFIG.interactive3D</code>.
           </p>
 
-          <!-- 3D viewer용 텍스트 썸네일 -->
-          <div class="results-thumbs" id="viewer3d-thumbs"></div>
+          <!-- 3D viewer tabs -->
+          <div class="results-thumbs" id="viewer-3d-thumbs"></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- RESULTS (이미지) -->
+  <!-- RESULTS (images with text tabs) -->
   <section class="section" id="results">
     <div class="container is-max-desktop">
-      <h2 class="title is-3 has-text-centered">Qualitative Image Results</h2>
+      <h2 class="title is-3 has-text-centered">Results</h2>
 
       <div class="results-main-wrapper">
         <img id="result-main" class="results-main-image"
@@ -529,7 +528,7 @@
              alt="Main result image">
 
         <div class="results-thumbs" id="results-thumbs-container">
-          <!-- JS에서 PAGE_CONFIG.results로 채움 -->
+          <!-- JS에서 PAGE_CONFIG.results 로 채움 -->
         </div>
       </div>
     </div>
@@ -542,19 +541,19 @@
 
       <div class="comparison-wrapper">
         <div class="comparison-video-container" id="video-compare-container">
-          <!-- Left -->
+          <!-- Left: Baseline -->
           <video id="video-left" class="compare-video"
-                muted loop playsinline preload="metadata">
+                 muted loop playsinline preload="metadata" autoplay>
             <source src="static/videos/carousel2.mp4" type="video/mp4">
           </video>
 
-          <!-- Right -->
+          <!-- Right: Ours -->
           <video id="video-right" class="compare-video"
-                muted loop playsinline preload="metadata">
+                 muted loop playsinline preload="metadata" autoplay>
             <source src="static/videos/carousel1.mp4" type="video/mp4">
           </video>
 
-          <!-- 라벨 -->
+          <!-- Labels over videos -->
           <span class="comparison-label comparison-label-left" id="video-left-label">
             Baseline
           </span>
@@ -562,22 +561,27 @@
             Ours
           </span>
 
-          <!-- 가운데 세로 슬라이더 핸들 (동그라미 + < >) -->
+          <!-- Vertical slider handle with circle + < > -->
           <div class="compare-handle" id="compare-handle">
             <div class="compare-handle-circle">
-              <span class="compare-handle-arrow">&lt;</span>
-              <span class="compare-handle-arrow">&gt;</span>
+              <span class="compare-handle-chev">&lt;</span>
+              <span class="compare-handle-chev">&gt;</span>
             </div>
           </div>
         </div>
 
-        <!-- scene 선택용 텍스트 썸네일 -->
-        <div class="results-thumbs" id="video-compare-thumbs"></div>
+        <div class="is-flex is-justify-content-space-between mt-2 is-size-7 has-text-grey">
+          <span id="video-left-caption">Baseline</span>
+          <span id="video-right-caption">Ours</span>
+        </div>
+
+        <!-- Scene tabs -->
+        <div class="results-thumbs mt-3" id="video-compare-thumbs"></div>
       </div>
     </div>
   </section>
 
-  <!-- YOUTUBE TALK -->
+  <!-- YOUTUBE -->
   <section class="hero is-small is-light" id="video">
     <div class="hero-body">
       <div class="container">
@@ -585,8 +589,7 @@
         <div class="columns is-centered has-text-centered">
           <div class="column is-four-fifths">
             <div class="publication-video">
-              <iframe id="talk-video"
-                      src="https://www.youtube.com/embed/JkaxUblCGz0"
+              <iframe src="https://www.youtube.com/embed/JkaxUblCGz0"
                       frameborder="0"
                       allow="autoplay; encrypted-media"
                       allowfullscreen>
@@ -613,8 +616,10 @@
                   type="video/mp4">
         </video>
 
-        <!-- 텍스트 배너 썸네일 -->
-        <div class="results-thumbs" id="more-results-thumbs-container"></div>
+        <!-- 텍스트 배너 썸네일들 -->
+        <div class="results-thumbs" id="more-results-thumbs-container">
+          <!-- JS에서 PAGE_CONFIG.moreResultsVideos 로 채워짐 -->
+        </div>
       </div>
     </div>
   </section>
@@ -629,7 +634,13 @@
           <span class="copy-text">Copy</span>
         </button>
       </div>
-      <pre id="bibtex-code"><code>@article{YourPaperKey2025}</code></pre>
+      <pre id="bibtex-code"><code>@article{YourPaperKey2024,
+  title={Your Paper Title Here},
+  author={First Author and Second Author and Third Author},
+  journal={Conference/Journal Name},
+  year={2024},
+  url={https://your-domain.com/your-project-page}
+}</code></pre>
     </div>
   </section>
 
@@ -673,20 +684,18 @@
       document.title = cfg.paperTitle;
     }
 
-    // Institution + icon + conference
-    const subtitleNode = document.getElementById('paper-subtitle');
-    if (subtitleNode) {
-      if (cfg.institution && cfg.institution.name) {
-        const icon = cfg.institution.icon
-          ? `<img src="${cfg.institution.icon}"
-                   alt="${cfg.institution.iconAlt || 'Institution icon'}"
-                   class="institution-icon">`
-          : '';
-        const conf = cfg.institution.conference ? `<br>${cfg.institution.conference}` : '';
-        subtitleNode.innerHTML = `${icon}<span class="institution-name">${cfg.institution.name}</span>${conf}`;
-      } else if (cfg.paperSubtitle) {
-        subtitleNode.innerHTML = cfg.paperSubtitle;
+    const subtitleTextNode = document.getElementById('paper-subtitle-text');
+    if (subtitleTextNode) {
+      if (cfg.paperSubtitleHTML) {
+        subtitleTextNode.innerHTML = cfg.paperSubtitleHTML;
       }
+    }
+
+    const instLogo = document.getElementById('institution-logo');
+    if (instLogo && cfg.institutionLogo) {
+      instLogo.src = cfg.institutionLogo;
+      instLogo.alt = cfg.institutionLogoAlt || 'Institution logo';
+      instLogo.style.display = 'inline-block';
     }
 
     if (Array.isArray(cfg.authors)) {
@@ -713,80 +722,81 @@
         const el = document.getElementById(id);
         if (el && url) el.href = url;
       };
-      setHref('link-pdf', cfg.links.pdf);
-      setHref('link-arxiv', cfg.links.arxiv);
+      setHref('link-pdf',  cfg.links.pdf);
+      setHref('link-arxiv',cfg.links.arxiv);
       setHref('link-code', cfg.links.code);
       setHref('link-supp', cfg.links.supp);
     }
 
-    // Teaser / abstract / model overview / YouTube / BibTeX
-    const teaserEl = document.getElementById('teaser-text');
-    if (teaserEl && cfg.teaserText) teaserEl.innerHTML = cfg.teaserText;
-
-    const absEl = document.getElementById('abstract-content');
-    if (absEl && cfg.abstractHTML) absEl.innerHTML = cfg.abstractHTML;
-
-    const moImg = document.getElementById('model-overview-image');
-    const moCap = document.getElementById('model-overview-caption');
-    if (cfg.modelOverview) {
-      if (moImg && cfg.modelOverview.image) moImg.src = cfg.modelOverview.image;
-      if (moCap && cfg.modelOverview.caption) moCap.textContent = cfg.modelOverview.caption;
+    /* ===== Teaser & model overview ===== */
+    if (cfg.teaserVideoSrc) {
+      const tv = document.getElementById('teaser-video');
+      const src = document.getElementById('teaser-video-source');
+      if (tv && src) {
+        src.src = cfg.teaserVideoSrc;
+        tv.load();
+        tv.play().catch(() => {});
+      }
     }
 
-    const talkVideo = document.getElementById('talk-video');
-    if (talkVideo && cfg.youtubeId) {
-      talkVideo.src = `https://www.youtube.com/embed/${cfg.youtubeId}`;
+    if (cfg.modelOverviewImage) {
+      const img = document.getElementById('model-overview-image');
+      if (img) img.src = cfg.modelOverviewImage;
+    }
+    if (cfg.modelOverviewCaption) {
+      const cap = document.getElementById('model-overview-caption');
+      if (cap) cap.textContent = cfg.modelOverviewCaption;
     }
 
-    const bibCodeEl = document.querySelector('#bibtex-code code');
-    if (bibCodeEl && cfg.bibtex) {
-      bibCodeEl.textContent = cfg.bibtex;
-    }
-
-    /* ===== 기타 비디오: 클릭하면 play/pause ===== */
+    /* ===== 모든 video: 클릭하면 play/pause (비교용 두 영상 제외) ===== */
     const vLeft = document.getElementById('video-left');
     const vRight = document.getElementById('video-right');
 
     const allVideos = Array.from(document.querySelectorAll('video'));
     allVideos.forEach(v => {
-      if (v === vLeft || v === vRight) return; // 비교용은 따로 처리
+      if (v === vLeft || v === vRight) return;
       v.addEventListener('click', () => {
         if (v.paused) v.play(); else v.pause();
       });
     });
 
-    /* ===== 3D viewer 여러 모델 ===== */
+    /* ===== Interactive 3D viewer tabs ===== */
     const mv = document.getElementById('mv-4d');
-    const viewerThumbs = document.getElementById('viewer3d-thumbs');
-    if (mv && viewerThumbs && cfg.viewer3D && Array.isArray(cfg.viewer3D.models) && cfg.viewer3D.models.length) {
-      const models = cfg.viewer3D.models;
-      const setModel = (src) => {
-        mv.setAttribute('src', src);
-      };
-      setModel(models[0].src);
+    const viewerThumbs = document.getElementById('viewer-3d-thumbs');
+    if (mv && viewerThumbs && Array.isArray(cfg.interactive3D) && cfg.interactive3D.length) {
+      const items = cfg.interactive3D;
 
-      viewerThumbs.innerHTML = models.map((m, idx) => `
-        <button class="result-thumb ${idx === 0 ? 'is-active' : ''}" data-src="${m.src}">
+      const setModel = (src) => {
+        if (!src) return;
+        mv.src = src;
+      };
+
+      setModel(items[0].model);
+
+      viewerThumbs.innerHTML = items.map((r, idx) => `
+        <button class="result-thumb ${idx === 0 ? 'is-active' : ''}"
+                data-model="${r.model}">
           <div class="result-thumb-inner">
-            <span class="tag is-medium is-rounded is-light">${m.label}</span>
+            <span class="tag is-medium is-rounded is-light">${r.label}</span>
           </div>
         </button>
       `).join('');
 
-      const btns = Array.from(viewerThumbs.querySelectorAll('.result-thumb'));
-      btns.forEach(btn => {
+      const buttons = Array.from(viewerThumbs.querySelectorAll('.result-thumb'));
+      buttons.forEach(btn => {
         btn.addEventListener('click', () => {
-          const src = btn.dataset.src;
+          const src = btn.dataset.model;
           if (src) setModel(src);
-          btns.forEach(b => b.classList.remove('is-active'));
+          buttons.forEach(b => b.classList.remove('is-active'));
           btn.classList.add('is-active');
         });
       });
     }
 
-    /* ===== Image Results 썸네일 ===== */
+    /* ===== Results: PAGE_CONFIG.results → 텍스트 배너 ===== */
     const mainResultImage = document.getElementById('result-main');
     const thumbsContainer = document.getElementById('results-thumbs-container');
+
     if (mainResultImage && thumbsContainer && Array.isArray(cfg.results) && cfg.results.length) {
       mainResultImage.src = cfg.results[0].image;
       thumbsContainer.innerHTML = cfg.results.map((r, idx) => `
@@ -808,69 +818,68 @@
       });
     }
 
-    /* ===== Qualitative Video Comparison: 여러 scene + slider ===== */
-    const compareThumbs = document.getElementById('video-compare-thumbs');
-    const leftLabelEl  = document.getElementById('video-left-label');
-    const rightLabelEl = document.getElementById('video-right-label');
-
-    let compareSets = [];
-    if (Array.isArray(cfg.videoCompareSets) && cfg.videoCompareSets.length) {
-      compareSets = cfg.videoCompareSets;
-    }
-
-    const handle   = document.getElementById('compare-handle');
+    /* ===== Qualitative video compare (multiple scenes) ===== */
     const container = document.getElementById('video-compare-container');
+    const videoRight = vRight;
+    const handle = document.getElementById('compare-handle');
+    const leftLabel = document.getElementById('video-left-label');
+    const rightLabel = document.getElementById('video-right-label');
+    const leftCaption = document.getElementById('video-left-caption');
+    const rightCaption = document.getElementById('video-right-caption');
+    const vcThumbs = document.getElementById('video-compare-thumbs');
 
-    const resetSlider = () => {
-      if (vRight && handle) {
-        vRight.style.clipPath = 'inset(0 0 0 50%)';
-        handle.style.left = '50%';
+    const applyCompareVariant = (variant, autoplay=true) => {
+      if (!variant || !vLeft || !vRight) return;
+      const sL = vLeft.querySelector('source');
+      const sR = vRight.querySelector('source');
+      if (sL && variant.leftSrc)  sL.src  = variant.leftSrc;
+      if (sR && variant.rightSrc) sR.src = variant.rightSrc;
+      vLeft.load();
+      vRight.load();
+      if (autoplay) {
+        vLeft.play().catch(() => {});
+        vRight.play().catch(() => {});
       }
+      if (leftLabel && variant.leftLabel)   leftLabel.textContent = variant.leftLabel;
+      if (rightLabel && variant.rightLabel) rightLabel.textContent = variant.rightLabel;
+      if (leftCaption && variant.leftLabel)  leftCaption.textContent  = variant.leftLabel;
+      if (rightCaption && variant.rightLabel) rightCaption.textContent = variant.rightLabel;
     };
 
-    const applyCompareSet = (set) => {
-      if (!set) return;
-      if (vLeft && set.leftSrc) {
-        const s = vLeft.querySelector('source');
-        if (s) { s.src = set.leftSrc; vLeft.load(); }
-      }
-      if (vRight && set.rightSrc) {
-        const s = vRight.querySelector('source');
-        if (s) { s.src = set.rightSrc; vRight.load(); }
-      }
-      if (leftLabelEl && set.leftLabel)  leftLabelEl.textContent  = set.leftLabel;
-      if (rightLabelEl && set.rightLabel) rightLabelEl.textContent = set.rightLabel;
-      resetSlider();
-    };
+    if (Array.isArray(cfg.videoCompareSets) &&
+        cfg.videoCompareSets.length &&
+        container && videoRight && handle) {
 
-    if (compareSets.length) {
-      applyCompareSet(compareSets[0]);
+      const sets = cfg.videoCompareSets;
 
-      if (compareThumbs) {
-        compareThumbs.innerHTML = compareSets.map((s, idx) => `
-          <button class="result-thumb ${idx === 0 ? 'is-active' : ''}" data-index="${idx}">
+      // 초기 세트 적용 (자동재생)
+      applyCompareVariant(sets[0], true);
+
+      // 세트 선택용 탭 생성
+      if (vcThumbs) {
+        vcThumbs.innerHTML = sets.map((s, idx) => `
+          <button class="result-thumb ${idx === 0 ? 'is-active' : ''}"
+                  data-index="${idx}">
             <div class="result-thumb-inner">
               <span class="tag is-medium is-rounded is-light">${s.label}</span>
             </div>
           </button>
         `).join('');
 
-        const buttons = Array.from(compareThumbs.querySelectorAll('.result-thumb'));
+        const buttons = Array.from(vcThumbs.querySelectorAll('.result-thumb'));
         buttons.forEach(btn => {
           btn.addEventListener('click', () => {
             const idx = parseInt(btn.dataset.index, 10);
-            if (!isNaN(idx) && compareSets[idx]) {
-              applyCompareSet(compareSets[idx]);
+            if (!isNaN(idx) && sets[idx]) {
+              applyCompareVariant(sets[idx], true);
             }
             buttons.forEach(b => b.classList.remove('is-active'));
             btn.classList.add('is-active');
           });
         });
       }
-    }
 
-    // slider drag + pair play/pause
-    if (container && vRight && handle) {
+      // 슬라이더 드래그
       let isDraggingCompare = false;
 
       const updatePosFromClientX = (clientX) => {
@@ -878,8 +887,8 @@
         let t = (clientX - rect.left) / rect.width;
         t = Math.max(0, Math.min(1, t));
         const percent = t * 100;
-        vRight.style.clipPath = `inset(0 0 0 ${percent}%)`;
-        handle.style.left = `${percent}%`;
+        if (videoRight) videoRight.style.clipPath = `inset(0 0 0 ${percent}%)`;
+        if (handle) handle.style.left = `${percent}%`;
       };
 
       const onPointerMove = (e) => {
@@ -923,7 +932,7 @@
           if (shouldPlay) vid.play().catch(()=>{}); else vid.pause();
         });
       };
-      [container, handle, vLeft, vRight].forEach(el => {
+      [container, handle].forEach(el => {
         if (!el) return;
         el.addEventListener('click', () => {
           if (isDraggingCompare) return;
@@ -953,6 +962,7 @@
         }
       };
 
+      // 초기 상태
       setMainVideo(vids[0].src, false);
 
       moreThumbsContainer.innerHTML = vids.map((r, idx) => `
@@ -970,7 +980,7 @@
       thumbButtons.forEach(btn => {
         btn.addEventListener('click', () => {
           const src = btn.dataset.src;
-          if (src) setMainVideo(src);
+          if (src) setMainVideo(src, true);
           thumbButtons.forEach(b => b.classList.remove('is-active'));
           btn.classList.add('is-active');
         });
