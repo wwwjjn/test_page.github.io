@@ -552,13 +552,13 @@
                class="results-main-image"
                muted loop playsinline preload="metadata">
           <source id="more-results-main-source"
-                  src="static/videos/carousel1.mp4"
+                  src=""
                   type="video/mp4">
         </video>
 
         <!-- 텍스트 배너 썸네일들 (JS가 채움) -->
         <div class="results-thumbs" id="more-results-thumbs-container">
-          <!-- JS에서 PAGE_CONFIG.moreResultsVideos로 채워짐 -->
+          <!-- JS에서 PAGE_CONFIG.moreResultsVideos 로 채워짐 -->
         </div>
       </div>
     </div>
@@ -786,22 +786,33 @@
         });
       });
     }
-    /* ====== 4. More Results: 비디오 + 텍스트 썸네일 ====== */
-    const moreMainVideo = document.getElementById('more-results-main');
-    const moreMainSource = document.getElementById('more-results-main-source');
+     /* ====== 4. More Results: 비디오 + 텍스트 썸네일 ====== */
+    const moreMainVideo       = document.getElementById('more-results-main');
+    const moreMainSource      = document.getElementById('more-results-main-source');
     const moreThumbsContainer = document.getElementById('more-results-thumbs-container');
 
-    if (moreMainVideo && moreMainSource &&
+    if (moreMainVideo &&
+        moreMainSource &&
         moreThumbsContainer &&
         Array.isArray(cfg.moreResultsVideos) &&
         cfg.moreResultsVideos.length) {
 
-      // 초기 비디오를 첫 항목으로 설정
-      moreMainSource.src = cfg.moreResultsVideos[0].src;
-      moreMainVideo.load();
+      const vids = cfg.moreResultsVideos;
 
-      // 텍스트 배너들 생성
-      moreThumbsContainer.innerHTML = cfg.moreResultsVideos.map((r, idx) => `
+      // 메인 비디오 src 세팅 + (옵션) 자동 재생
+      const setMainVideo = (src, autoplay = true) => {
+        moreMainSource.src = src;
+        moreMainVideo.load();
+        if (autoplay) {
+          moreMainVideo.play().catch(() => {});
+        }
+      };
+
+      // 초기 상태: 첫 번째 비디오로
+      setMainVideo(vids[0].src, false);
+
+      // 텍스트 썸네일 생성
+      moreThumbsContainer.innerHTML = vids.map((r, idx) => `
         <button class="result-thumb ${idx === 0 ? 'is-active' : ''}"
                 data-src="${r.src}">
           <div class="result-thumb-inner">
@@ -810,20 +821,24 @@
         </button>
       `).join('');
 
-      const moreThumbButtons =
+      const thumbButtons =
         Array.from(moreThumbsContainer.querySelectorAll('.result-thumb'));
 
-      moreThumbButtons.forEach(btn => {
+      thumbButtons.forEach(btn => {
         btn.addEventListener('click', () => {
           const src = btn.dataset.src;
           if (src) {
-            // 비디오 소스 교체 + 다시 로드
-            moreMainSource.src = src;
-            moreMainVideo.load();
+            setMainVideo(src);
           }
-          moreThumbButtons.forEach(b => b.classList.remove('is-active'));
+          thumbButtons.forEach(b => b.classList.remove('is-active'));
           btn.classList.add('is-active');
         });
+      });
+
+      // 메인 비디오 클릭하면 재생/일시정지 토글
+      moreMainVideo.addEventListener('click', () => {
+        if (moreMainVideo.paused) moreMainVideo.play();
+        else moreMainVideo.pause();
       });
     }
   });
