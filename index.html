@@ -11,11 +11,7 @@
   <meta name="description" content="BRIEF_DESCRIPTION_OF_YOUR_RESEARCH_CONTRIBUTION_AND_FINDINGS">
   <meta name="keywords" content="KEYWORD1, KEYWORD2, KEYWORD3, machine learning, computer vision, AI">
   <meta name="author" content="FIRST_AUTHOR_NAME, SECOND_AUTHOR_NAME">
-  <!-- 검색 엔진 비공개용 -->
   <meta name="robots" content="noindex, nofollow">
-  <!-- 검색 엔진 공개용
-  <meta name="robots" content="noindex, nofollow">
-  -->
   <meta name="language" content="English">
 
   <!-- Open Graph / Facebook -->
@@ -64,13 +60,13 @@
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
 
   <!-- =========================
-       PAGE CONFIG (여기만 수정하면 됨)
+       PAGE CONFIG
      ========================= -->
   <script>
     window.PAGE_CONFIG = {
       paperTitle: "VDSL 3D team Template",
       paperSubtitleHTML: "Sogang University<br>ECCV 2026",
-      institutionLogo: "static/images/sogang_symbol.png",   // 없으면 "" 로 두면 됨
+      institutionLogo: "static/images/sogang_symbol.png",
       institutionLogoAlt: "Sogang University logo",
 
       authors: [
@@ -86,12 +82,10 @@
         supp:"static/pdfs/supplementary_material.pdf"
       },
 
-      // Teaser & model overview
       teaserVideoSrc: "static/videos/banner_video.mp4",
       modelOverviewImage: "static/images/carousel1.jpg",
       modelOverviewCaption: "Brief caption describing the overall architecture or pipeline.",
 
-      // Static result images
       results: [
         { label: "Scene 1 · Baseline vs Ours", image: "static/images/carousel1.jpg" },
         { label: "Scene 2 · View Synthesis",   image: "static/images/carousel2.jpg" },
@@ -99,13 +93,11 @@
         { label: "Scene 4 · Novel View",       image: "static/images/carousel4.jpg" }
       ],
 
-      // Interactive 3D viewer (model-viewer)
       interactive3D: [
-        { label: "Scene 1 ",  model: "static/model/glbscene_50_All_maskbFalse_maskwFalse_camTrue_skyFalse_predDepthmap_and_Camera_Branch.glb" },
+        { label: "Scene 1 ", model: "static/model/glbscene_50_All_maskbFalse_maskwFalse_camTrue_skyFalse_predDepthmap_and_Camera_Branch.glb" },
         { label: "Scene 2 ", model: "static/model/R_Tower.glb" }
       ],
 
-      // Qualitative video compare sets (slider)
       videoCompareSets: [
         {
           label: "Seq 1 · Baseline vs Ours",
@@ -123,7 +115,6 @@
         }
       ],
 
-      // More Results (single video + text tabs)
       moreResultsVideos: [
         { label: "More Result · View 1", src: "static/videos/carousel1.mp4" },
         { label: "More Result · View 2", src: "static/videos/carousel2.mp4" },
@@ -142,18 +133,9 @@
   <link rel="stylesheet" href="static/css/bulma.min.css">
   <link rel="stylesheet" href="static/css/index.css">
 
-  <!-- Non-critical CSS -->
-  <link rel="preload" href="static/css/bulma-carousel.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" href="static/css/bulma-slider.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" href="static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-
-  <noscript>
-    <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
-    <link rel="stylesheet" href="static/css/bulma-slider.min.css">
-    <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-  </noscript>
+  <!-- Icons / Academicons -->
+  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -162,9 +144,6 @@
   <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script defer src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
   <script defer src="static/js/fontawesome.all.min.js"></script>
-  <script defer src="static/js/bulma-carousel.min.js"></script>
-  <script defer src="static/js/bulma-slider.min.js"></script>
-  <script defer src="static/js/index.js"></script>
 
   <!-- 3D Viewer -->
   <script type="module" src="https://unpkg.com/@google/model-viewer@latest/dist/model-viewer.min.js"></script>
@@ -214,14 +193,8 @@
   }
   </script>
 
-  <!-- Small custom styles -->
+  <!-- Custom styles -->
   <style>
-    .qual-video {
-      width: 100%;
-      border-radius: 8px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    }
-
     /* 2-way video comparison */
     .comparison-wrapper {
       margin-top: 1.5rem;
@@ -258,7 +231,7 @@
       top: 0;
       bottom: 0;
       left: 50%;
-      width: 40px;                /* 클릭 영역 */
+      width: 40px;
       transform: translateX(-50%);
       z-index: 4;
       cursor: ew-resize;
@@ -312,13 +285,8 @@
       z-index: 4;
     }
 
-    .comparison-label-left {
-      left: 16px;   /* 왼쪽 상단 코너 */
-    }
-
-    .comparison-label-right {
-      right: 16px;  /* 오른쪽 상단 코너 */
-    }
+    .comparison-label-left { left: 16px; }
+    .comparison-label-right { right: 16px; }
 
     /* Results / thumbnails / tabs 공통 스타일 */
     .results-main-wrapper {
@@ -360,18 +328,18 @@
       border-color: #3273dc;
     }
 
-    /* Institution logo next to subtitle */
     .institution-logo {
       height: 1.4rem;
       margin-right: 0.4rem;
       vertical-align: text-bottom;
     }
+
     .publication-video {
       position: relative;
       width: 100%;
-      max-width: 960px;      /* 필요없으면 이 줄 지워도 됨 */
+      max-width: 960px;
       margin: 0 auto;
-      padding-bottom: 56.25%; /* 16:9 = 9/16 * 100 */
+      padding-bottom: 56.25%;
       height: 0;
       overflow: hidden;
       border-radius: 12px;
@@ -387,20 +355,113 @@
       height: 100%;
       border: 0;
     }
+
+    /* =====================
+       Custom media control bar
+       ===================== */
+    .media-control-bar {
+      max-width: 480px;
+      margin: 0.75rem auto 0;
+      padding: 0.5rem 0.9rem;
+      border-radius: 999px;
+      background: #ffffff;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.16);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.85rem;
+    }
+
+    .media-play-btn {
+      border: none;
+      background: #111827;
+      color: #ffffff;
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0;
+      font-size: 13px;
+    }
+
+    .media-play-btn:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.5);
+    }
+
+    .media-time-label {
+      white-space: nowrap;
+      color: #4b5563;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* 단색 cyan-blue progress bar */
+    .media-progress {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 6px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      outline: none;
+      cursor: pointer;
+      background-image: linear-gradient(
+        to right,
+        #06b6d4 0%,
+        #06b6d4 var(--val, 0%),
+        #e5e7eb var(--val, 0%),
+        #e5e7eb 100%
+      );
+    }
+
+    /* WebKit */
+    .media-progress::-webkit-slider-runnable-track {
+      height: 6px;
+      border-radius: 999px;
+      background: transparent;
+    }
+
+    .media-progress::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      background: #ffffff;
+      border: 2px solid #06b6d4;
+      box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.05);
+      margin-top: -4px;
+    }
+
+    /* Firefox */
+    .media-progress::-moz-range-track {
+      height: 6px;
+      border-radius: 999px;
+      background: transparent;
+    }
+
+    .media-progress::-moz-range-progress {
+      height: 6px;
+      border-radius: 999px 0 0 999px;
+      background: #06b6d4;
+    }
+
+    .media-progress::-moz-range-thumb {
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      background: #ffffff;
+      border: 2px solid #06b6d4;
+      box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.05);
+    }
   </style>
-
-<script type="importmap">
-{
-  "imports": {
-    "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
-  }
-}
-</script>
-
 </head>
 <body>
 
-  <!-- Scroll to Top Button -->
+  <!-- Scroll to Top Button (scrollToTop는 외부 JS에서 정의돼 있다고 가정) -->
   <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
     <i class="fas fa-chevron-up"></i>
   </button>
@@ -415,9 +476,7 @@
           <div class="column has-text-centered">
             <h1 class="title is-1 publication-title">VDSL 3D team Template</h1>
 
-            <div class="is-size-5 publication-authors" id="authors-container">
-              <!-- JS에서 채움 -->
-            </div>
+            <div class="is-size-5 publication-authors" id="authors-container"></div>
 
             <div class="is-size-5 publication-authors">
               <span class="author-block">
@@ -524,7 +583,7 @@
     </div>
   </section>
 
-  <!-- 3D + 4D VIEWERS -->
+  <!-- 3D & 4D VIEWERS -->
   <section class="section hero is-light" id="viewer-3d">
     <div class="container is-max-desktop">
       <h2 class="title is-3 has-text-centered">Interactive 3D &amp; 4D Viewer</h2>
@@ -548,11 +607,10 @@
             <code>PAGE_CONFIG.interactive3D</code>.
           </p>
 
-          <!-- 3D viewer tabs -->
           <div class="results-thumbs" id="viewer-3d-thumbs"></div>
         </div>
 
-        <!-- 4D (Viser .viser) 뷰어 -->
+        <!-- 4D (Viser .viser) iframe -->
         <div class="column is-12-tablet is-6-desktop">
           <h3 class="title is-5 has-text-centered mb-3">4D Gaussian Viewer (Viser)</h3>
 
@@ -577,7 +635,7 @@
     </div>
   </section>
 
-  <!-- RESULTS (images with text tabs) -->
+  <!-- RESULTS (images with tabs) -->
   <section class="section" id="results">
     <div class="container is-max-desktop">
       <h2 class="title is-3 has-text-centered">Results</h2>
@@ -587,9 +645,7 @@
              src="static/images/carousel1.jpg"
              alt="Main result image">
 
-        <div class="results-thumbs" id="results-thumbs-container">
-          <!-- JS에서 PAGE_CONFIG.results 로 채움 -->
-        </div>
+        <div class="results-thumbs" id="results-thumbs-container"></div>
       </div>
     </div>
   </section>
@@ -613,7 +669,6 @@
             <source src="static/videos/carousel1.mp4" type="video/mp4">
           </video>
 
-          <!-- Labels over videos -->
           <span class="comparison-label comparison-label-left" id="video-left-label">
             Baseline
           </span>
@@ -621,7 +676,6 @@
             Ours
           </span>
 
-          <!-- Vertical slider handle with circle + < > -->
           <div class="compare-handle" id="compare-handle">
             <div class="compare-handle-circle">
               <span class="compare-handle-chev">&lt;</span>
@@ -630,20 +684,29 @@
           </div>
         </div>
 
-        <!-- 프로그레스 바 (Qualitative) -->
-        <div class="mt-3">
+        <!-- 플레이어 컨트롤 (Qualitative) -->
+        <div class="media-control-bar">
+          <button
+            id="video-compare-play"
+            type="button"
+            class="media-play-btn"
+          >
+            ▶
+          </button>
+          <span id="video-compare-time" class="media-time-label">
+            0:00 / 0:00
+          </span>
           <input
             id="video-compare-progress"
+            class="media-progress"
             type="range"
             min="0"
             max="100"
             step="0.1"
             value="0"
-            style="width:100%;"
           />
         </div>
 
-        <!-- Scene tabs -->
         <div class="results-thumbs mt-3" id="video-compare-thumbs"></div>
       </div>
     </div>
@@ -655,7 +718,6 @@
       <h2 class="title is-3 has-text-centered">More Results</h2>
 
       <div class="results-main-wrapper">
-        <!-- 메인 비디오 -->
         <video id="more-results-main"
                class="results-main-image"
                muted loop playsinline preload="metadata">
@@ -664,23 +726,30 @@
                   type="video/mp4">
         </video>
 
-        <!-- 프로그레스 바 (More Results) -->
-        <div class="mt-3">
+        <!-- 플레이어 컨트롤 (More Results) -->
+        <div class="media-control-bar">
+          <button
+            id="more-results-play"
+            type="button"
+            class="media-play-btn"
+          >
+            ▶
+          </button>
+          <span id="more-results-time" class="media-time-label">
+            0:00 / 0:00
+          </span>
           <input
             id="more-results-progress"
+            class="media-progress"
             type="range"
             min="0"
             max="100"
             step="0.1"
             value="0"
-            style="width:100%;"
           />
         </div>
 
-        <!-- 텍스트 배너 썸네일들 -->
-        <div class="results-thumbs" id="more-results-thumbs-container">
-          <!-- JS에서 PAGE_CONFIG.moreResultsVideos 로 채워짐 -->
-        </div>
+        <div class="results-thumbs" id="more-results-thumbs-container"></div>
       </div>
     </div>
   </section>
@@ -758,6 +827,13 @@
   document.addEventListener('DOMContentLoaded', () => {
     const cfg = window.PAGE_CONFIG || {};
 
+    const formatTime = (t) => {
+      if (!isFinite(t) || t < 0) return '0:00';
+      const m = Math.floor(t / 60);
+      const s = Math.floor(t % 60).toString().padStart(2, '0');
+      return `${m}:${s}`;
+    };
+
     /* ===== 헤더 타이틀 / 저자 / 링크 ===== */
     if (cfg.paperTitle) {
       document.querySelectorAll('.publication-title')
@@ -766,10 +842,8 @@
     }
 
     const subtitleTextNode = document.getElementById('paper-subtitle-text');
-    if (subtitleTextNode) {
-      if (cfg.paperSubtitleHTML) {
-        subtitleTextNode.innerHTML = cfg.paperSubtitleHTML;
-      }
+    if (subtitleTextNode && cfg.paperSubtitleHTML) {
+      subtitleTextNode.innerHTML = cfg.paperSubtitleHTML;
     }
 
     const instLogo = document.getElementById('institution-logo');
@@ -829,7 +903,7 @@
       if (cap) cap.textContent = cfg.modelOverviewCaption;
     }
 
-    /* ===== 모든 video: 클릭하면 play/pause (비교용 두 영상 제외) ===== */
+    /* ===== 일반 video: 클릭하면 play/pause (비교용 두 영상 제외) ===== */
     const vLeft = document.getElementById('video-left');
     const vRight = document.getElementById('video-right');
 
@@ -874,7 +948,7 @@
       });
     }
 
-    /* ===== Results: PAGE_CONFIG.results → 텍스트 배너 ===== */
+    /* ===== Results: images + tabs ===== */
     const mainResultImage = document.getElementById('result-main');
     const thumbsContainer = document.getElementById('results-thumbs-container');
 
@@ -899,16 +973,16 @@
       });
     }
 
-    /* ===== Qualitative video compare (multiple scenes) ===== */
+    /* ===== Qualitative video compare ===== */
     const container = document.getElementById('video-compare-container');
     const videoRight = vRight;
     const handle = document.getElementById('compare-handle');
     const leftLabel = document.getElementById('video-left-label');
     const rightLabel = document.getElementById('video-right-label');
-    const leftCaption = document.getElementById('video-left-caption');
-    const rightCaption = document.getElementById('video-right-caption');
     const vcThumbs = document.getElementById('video-compare-thumbs');
     const compareProgress = document.getElementById('video-compare-progress');
+    const comparePlayBtn = document.getElementById('video-compare-play');
+    const compareTimeLabel = document.getElementById('video-compare-time');
 
     const applyCompareVariant = (variant, autoplay=true) => {
       if (!variant || !vLeft || !vRight) return;
@@ -924,10 +998,12 @@
       }
       if (leftLabel && variant.leftLabel)   leftLabel.textContent = variant.leftLabel;
       if (rightLabel && variant.rightLabel) rightLabel.textContent = variant.rightLabel;
-      if (leftCaption && variant.leftLabel)  leftCaption.textContent  = variant.leftLabel;
-      if (rightCaption && variant.rightLabel) rightCaption.textContent = variant.rightLabel;
       if (compareProgress) {
         compareProgress.value = 0;
+        compareProgress.style.setProperty('--val', '0%');
+      }
+      if (compareTimeLabel) {
+        compareTimeLabel.textContent = '0:00 / 0:00';
       }
     };
 
@@ -937,10 +1013,10 @@
 
       const sets = cfg.videoCompareSets;
 
-      // 초기 세트 적용 (자동재생)
+      // 초기 세트 적용
       applyCompareVariant(sets[0], true);
 
-      // 프로그레스 바: 두 영상과 동기화
+      // 프로그레스 바 + 시간 동기화
       if (compareProgress && vLeft && vRight) {
         let isSeekingCompare = false;
 
@@ -949,6 +1025,12 @@
           const ratio = vLeft.currentTime / vLeft.duration;
           const pct = Math.max(0, Math.min(100, ratio * 100));
           compareProgress.value = isNaN(pct) ? 0 : pct;
+          compareProgress.style.setProperty('--val', `${pct}%`);
+
+          if (compareTimeLabel) {
+            compareTimeLabel.textContent =
+              `${formatTime(vLeft.currentTime)} / ${formatTime(vLeft.duration)}`;
+          }
         };
 
         vLeft.addEventListener('timeupdate', updateCompareProgress);
@@ -965,6 +1047,7 @@
           } else {
             vRight.currentTime = t;
           }
+          compareProgress.style.setProperty('--val', `${pct * 100}%`);
         });
 
         const stopSeekingCompare = () => { isSeekingCompare = false; };
@@ -973,7 +1056,32 @@
         compareProgress.addEventListener('touchend', stopSeekingCompare);
       }
 
-      // 세트 선택용 탭 생성
+      // Play/Pause 버튼
+      if (comparePlayBtn && vLeft && vRight) {
+        const syncCompareButton = () => {
+          const playing = !vLeft.paused && !vRight.paused;
+          comparePlayBtn.textContent = playing ? '⏸' : '▶';
+        };
+
+        comparePlayBtn.addEventListener('click', () => {
+          const playing = !vLeft.paused && !vRight.paused;
+          if (playing) {
+            vLeft.pause();
+            vRight.pause();
+          } else {
+            vLeft.play().catch(()=>{});
+            vRight.play().catch(()=>{});
+          }
+        });
+
+        vLeft.addEventListener('play', syncCompareButton);
+        vLeft.addEventListener('pause', syncCompareButton);
+        vRight.addEventListener('play', syncCompareButton);
+        vRight.addEventListener('pause', syncCompareButton);
+        syncCompareButton();
+      }
+
+      // 세트 탭
       if (vcThumbs) {
         vcThumbs.innerHTML = sets.map((s, idx) => `
           <button class="result-thumb ${idx === 0 ? 'is-active' : ''}"
@@ -1007,7 +1115,6 @@
 
         const percent = t * 100;
 
-        // 비디오 클리핑 + 핸들 위치
         if (videoRight) {
           videoRight.style.clipPath = `inset(0 0 0 ${percent}%)`;
         }
@@ -1015,31 +1122,18 @@
           handle.style.left = `${percent}%`;
         }
 
-        // ==== 라벨 표시/숨기기 ====
-        const leftWidth  = percent;          // 왼쪽 영역 폭 (%)
-        const rightWidth = 100 - percent;    // 오른쪽 영역 폭 (%)
-        const MIN_VISIBLE = 10;              // 이보다 좁으면 해당 라벨 숨김
+        const leftWidth  = percent;
+        const rightWidth = 100 - percent;
+        const MIN_VISIBLE = 10;
 
-        // 왼쪽 라벨 (Baseline)
         if (leftLabel) {
-          if (leftWidth < MIN_VISIBLE) {
-            leftLabel.style.opacity = '0';
-            leftLabel.style.pointerEvents = 'none';
-          } else {
-            leftLabel.style.opacity = '1';
-            leftLabel.style.pointerEvents = '';
-          }
+          leftLabel.style.opacity = leftWidth < MIN_VISIBLE ? '0' : '1';
+          leftLabel.style.pointerEvents = leftWidth < MIN_VISIBLE ? 'none' : '';
         }
 
-        // 오른쪽 라벨 (Ours)
         if (rightLabel) {
-          if (rightWidth < MIN_VISIBLE) {
-            rightLabel.style.opacity = '0';
-            rightLabel.style.pointerEvents = 'none';
-          } else {
-            rightLabel.style.opacity = '1';
-            rightLabel.style.pointerEvents = '';
-          }
+          rightLabel.style.opacity = rightWidth < MIN_VISIBLE ? '0' : '1';
+          rightLabel.style.pointerEvents = rightWidth < MIN_VISIBLE ? 'none' : '';
         }
       };
 
@@ -1059,7 +1153,6 @@
       window.addEventListener('mousemove', onPointerMove);
       window.addEventListener('mouseup', stopDrag);
 
-      // 터치
       handle.addEventListener('touchstart', (e) => {
         isDraggingCompare = true;
         updatePosFromClientX(e.touches[0].clientX);
@@ -1077,14 +1170,15 @@
 
       const initialRect = container.getBoundingClientRect();
       updatePosFromClientX(initialRect.left + initialRect.width * 0.5);
-
     }
 
-    /* ===== More Results: 비디오 + 텍스트 썸네일 ===== */
+    /* ===== More Results: 비디오 + 컨트롤 ===== */
     const moreMainVideo       = document.getElementById('more-results-main');
     const moreMainSource      = document.getElementById('more-results-main-source');
     const moreThumbsContainer = document.getElementById('more-results-thumbs-container');
     const moreProgress        = document.getElementById('more-results-progress');
+    const morePlayBtn         = document.getElementById('more-results-play');
+    const moreTimeLabel       = document.getElementById('more-results-time');
 
     if (moreMainVideo &&
         moreMainSource &&
@@ -1099,6 +1193,10 @@
         moreMainVideo.load();
         if (moreProgress) {
           moreProgress.value = 0;
+          moreProgress.style.setProperty('--val', '0%');
+        }
+        if (moreTimeLabel) {
+          moreTimeLabel.textContent = '0:00 / 0:00';
         }
         if (autoplay) {
           moreMainVideo.play().catch(() => {});
@@ -1108,7 +1206,7 @@
       // 초기 상태
       setMainVideo(vids[0].src, false);
 
-      // 메인 비디오와 프로그레스 동기화
+      // 프로그레스 + 시간 동기화
       if (moreProgress) {
         let isSeekingMore = false;
 
@@ -1117,6 +1215,12 @@
           const ratio = moreMainVideo.currentTime / moreMainVideo.duration;
           const pct = Math.max(0, Math.min(100, ratio * 100));
           moreProgress.value = isNaN(pct) ? 0 : pct;
+          moreProgress.style.setProperty('--val', `${pct}%`);
+
+          if (moreTimeLabel) {
+            moreTimeLabel.textContent =
+              `${formatTime(moreMainVideo.currentTime)} / ${formatTime(moreMainVideo.duration)}`;
+          }
         };
 
         moreMainVideo.addEventListener('timeupdate', updateMoreProgress);
@@ -1128,6 +1232,7 @@
           const pct = parseFloat(moreProgress.value) / 100;
           const t = moreMainVideo.duration * pct;
           moreMainVideo.currentTime = t;
+          moreProgress.style.setProperty('--val', `${pct * 100}%`);
         });
 
         const stopSeekingMore = () => { isSeekingMore = false; };
@@ -1136,6 +1241,26 @@
         moreProgress.addEventListener('touchend', stopSeekingMore);
       }
 
+      // Play/Pause 버튼
+      if (morePlayBtn) {
+        const syncMoreButton = () => {
+          morePlayBtn.textContent = moreMainVideo.paused ? '▶' : '⏸';
+        };
+
+        morePlayBtn.addEventListener('click', () => {
+          if (moreMainVideo.paused) {
+            moreMainVideo.play().catch(()=>{});
+          } else {
+            moreMainVideo.pause();
+          }
+        });
+
+        moreMainVideo.addEventListener('play', syncMoreButton);
+        moreMainVideo.addEventListener('pause', syncMoreButton);
+        syncMoreButton();
+      }
+
+      // 썸네일 탭
       moreThumbsContainer.innerHTML = vids.map((r, idx) => `
         <button class="result-thumb ${idx === 0 ? 'is-active' : ''}"
                 data-src="${r.src}">
@@ -1157,179 +1282,12 @@
         });
       });
 
+      // 비디오 클릭으로도 play/pause
       moreMainVideo.addEventListener('click', () => {
         if (moreMainVideo.paused) moreMainVideo.play();
         else moreMainVideo.pause();
       });
     }
-  });
-</script>
-
-<script type="module">
-  import * as THREE from "three";
-  import { OrbitControls } from "https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js";
-  import { PLYLoader } from "https://unpkg.com/three@0.160.0/examples/jsm/loaders/PLYLoader.js";
-
-  window.addEventListener("DOMContentLoaded", () => {
-    const container   = document.getElementById("gs4d-viewer");
-    const frameLabel  = document.getElementById("gs4d-frame-label");
-    const frameSlider = document.getElementById("gs4d-frame-slider");
-    const playBtn     = document.getElementById("gs4d-play-pause");
-
-    if (!container || !frameLabel || !frameSlider || !playBtn) {
-      console.warn("4D viewer elements not found");
-      return;
-    }
-
-    // ===== 기본 three.js 세팅 =====
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x000000);
-
-    const rect = container.getBoundingClientRect();
-    let width  = rect.width  || 800;
-    let height = rect.height || 420;
-
-    const camera = new THREE.PerspectiveCamera(45, width / height, 0.01, 1000);
-    camera.position.set(0, 0, 3);
-
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(width, height);
-    container.appendChild(renderer.domElement);
-
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.autoRotate = false;
-    controls.enableDamping = false;
-
-    controls.target.set(0, 0, 0);
-    controls.update();
-    const light = new THREE.DirectionalLight(0xffffff, 1.0);
-    light.position.set(1, 1, 1);
-    scene.add(light);
-
-    // ===== PLY 프레임 리스트 =====
-    const FRAME_COUNT = 20; // time_00000 ~ time_00019
-    const FRAME_BASE  = "static/gaussian_pertimestamp";
-    const FRAME_FILES = [];
-    for (let i = 0; i < FRAME_COUNT; i++) {
-      FRAME_FILES.push(
-        `${FRAME_BASE}/time_${String(i).padStart(5, "0")}.ply`
-      );
-    }
-
-    const loader  = new PLYLoader();
-    const frames  = new Array(FRAME_COUNT).fill(null);
-    let current   = 0;
-    let loadedNum = 0;
-
-    function updateLabel(idx) {
-      frameLabel.textContent = `frame: ${idx}`;
-    }
-
-    function loadFrame(idx) {
-      const url = FRAME_FILES[idx];
-      loader.load(
-        url,
-        (geometry) => {
-          geometry.computeBoundingSphere();
-          geometry.center();
-
-          console.log("ATTRIBUTES:", Object.keys(geometry.attributes));
-
-          const material = new THREE.PointsMaterial({
-            size: 0.01,
-            sizeAttenuation: true,
-            vertexColors: !!geometry.getAttribute("color"),
-          });
-
-          const points = new THREE.Points(geometry, material);
-          points.visible = false;
-          scene.add(points);
-
-          frames[idx] = points;
-          loadedNum++;
-
-          if (idx === 0) {
-            points.visible = true;
-            current = 0;
-            frameSlider.value = "0";
-            updateLabel(0);
-
-            const bs = geometry.boundingSphere;
-            if (bs && bs.radius > 0) {
-              camera.position.set(0, 0, bs.radius * 2.0);
-              camera.lookAt(0, 0, 0);
-            }
-          }
-
-          console.log(`Loaded frame ${idx}: ${url}`);
-        },
-        undefined,
-        (err) => {
-          console.error(`Error loading ${url}`, err);
-        }
-      );
-    }
-    for (let i = 0; i < FRAME_COUNT; i++) {
-      loadFrame(i);
-    }
-
-    function showFrame(idx) {
-      if (idx < 0 || idx >= FRAME_COUNT) return;
-      if (!frames[idx]) {
-        console.warn("Frame not loaded yet:", idx);
-        return;
-      }
-      if (frames[current]) frames[current].visible = false;
-      frames[idx].visible = true;
-      current = idx;
-      frameSlider.value = String(idx);
-      updateLabel(idx);
-    }
-
-    // ===== 슬라이더 & 재생 컨트롤 =====
-    frameSlider.addEventListener("input", () => {
-      const idx = parseInt(frameSlider.value, 10);
-      showFrame(idx);
-    });
-
-    let playing  = false;
-    let lastTime = 0;
-    const playbackFPS = 10;
-
-    playBtn.addEventListener("click", () => {
-      playing = !playing;
-      playBtn.textContent = playing ? "⏸" : "▶";
-    });
-
-    // ===== 렌더 루프 =====
-    function animate(timestamp) {
-      requestAnimationFrame(animate);
-
-      if (playing && loadedNum > 0) {
-        const dt = (timestamp - lastTime) / 1000.0;
-        if (dt > 1.0 / playbackFPS) {
-          lastTime = timestamp;
-          const next = (current + 1) % FRAME_COUNT;
-          showFrame(next);
-        }
-      }
-
-      controls.update();
-      renderer.render(scene, camera);
-    }
-    animate(0);
-
-    // ===== 리사이즈 대응 =====
-    window.addEventListener("resize", () => {
-      const r = container.getBoundingClientRect();
-      width  = r.width  || width;
-      height = r.height || height;
-      camera.aspect = width / height;
-      camera.updateProjectionMatrix();
-      renderer.setSize(width, height);
-    });
   });
 </script>
 
