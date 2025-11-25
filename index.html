@@ -360,7 +360,9 @@
        Custom media control bar
        ===================== */
     .media-control-bar {
-      max-width: 480px;
+      width: 100%;
+      max-width: 960px;          /* 영상 max-width와 동일 */
+      box-sizing: border-box;
       margin: 0.75rem auto 0;
       padding: 0.5rem 0.9rem;
       border-radius: 999px;
@@ -374,8 +376,9 @@
 
     .media-play-btn {
       border: none;
-      background: #111827;
-      color: #ffffff;
+      background: #ffffff;
+      color: #111827;
+      border: 1px solid #111827;
       width: 28px;
       height: 28px;
       border-radius: 999px;
@@ -389,7 +392,7 @@
 
     .media-play-btn:focus {
       outline: none;
-      box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.5);
+      box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.4);
     }
 
     .media-time-label {
