@@ -420,7 +420,24 @@
         #e5e7eb 100%
       );
     }
-
+    .media-progress {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 6px;                 /* 트랙 높이 */
+      border-radius: 999px;
+      background: #e5e7eb;
+      outline: none;
+      cursor: pointer;
+      background-image: linear-gradient(
+        to right,
+        #06b6d4 0%,
+        #06b6d4 var(--val, 0%),
+        #e5e7eb var(--val, 0%),
+        #e5e7eb 100%
+      );
+      margin-top: 1px;             /* 텍스트 베이스라인과 살짝 맞추기용 */
+    }
     /* WebKit */
     .media-progress::-webkit-slider-runnable-track {
       height: 6px;
@@ -1248,7 +1265,7 @@
       // Play/Pause 버튼
       if (morePlayBtn) {
         const syncMoreButton = () => {
-          morePlayBtn.textContent = moreMainVideo.paused ? '||' : '▶';
+          morePlayBtn.textContent = moreMainVideo.paused ? '▶' : '||';
         };
 
         morePlayBtn.addEventListener('click', () => {
