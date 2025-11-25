@@ -378,34 +378,23 @@
       background: #ffffff;
       color: #111827;
       border: none;
-      width: 28px;
-      height: 28px;
+      width: 32px;
+      height: 32px;
       border-radius: 999px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       padding: 0;
-      font-size: 0;
-      position: relative;
+      font-size: 16px;             /* ▶ / || 공통 사이즈 */
+      line-height: 1;              /* 높이 딱 맞게 */
+      font-family: system-ui, -apple-system, BlinkMacSystemFont,
+                   "Segoe UI", sans-serif;
     }
 
     .media-play-btn:focus {
       outline: none;
       box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.4);
-    }
-    .media-play-btn::before {
-      content: "▶";
-      font-size: 15px;
-      line-height: 1;
-      color: #111827;
-      display: block;
-    }
-    
-    /* 재생 중일 때 (pause 아이콘) – 약간만 줄여서 시각적 균형 맞추기 */
-    .media-play-btn[data-state="pause"]::before {
-      content: "⏸";
-      font-size: 14px;   /* ▶보다 살짝 작게 */
     }
     .media-time-label {
       white-space: nowrap;
@@ -705,8 +694,9 @@
             id="video-compare-play"
             type="button"
             class="media-play-btn"
-            data-state="play"
-          ></button>
+          >
+            ▶
+          </button>
           <span id="video-compare-time" class="media-time-label">
             0:00 / 0:00
           </span>
@@ -734,7 +724,7 @@
       <div class="results-main-wrapper">
         <video id="more-results-main"
                class="results-main-image"
-               muted loop playsinline preload="metadata">
+               muted loop playsinline preload="metadata" autoplay>
           <source id="more-results-main-source"
                   src=""
                   type="video/mp4">
@@ -746,8 +736,9 @@
             id="more-results-play"
             type="button"
             class="media-play-btn"
-            data-state="play"
-          ></button>
+          >
+            ▶
+          </button>
           <span id="more-results-time" class="media-time-label">
             0:00 / 0:00
           </span>
@@ -1073,7 +1064,7 @@
       if (comparePlayBtn && vLeft && vRight) {
         const syncCompareButton = () => {
           const playing = !vLeft.paused && !vRight.paused;
-          comparePlayBtn.textContent = playing ? 'pause' : 'play';
+          comparePlayBtn.textContent = playing ? '||' : '▶';  
         };
 
         comparePlayBtn.addEventListener('click', () => {
@@ -1257,7 +1248,7 @@
       // Play/Pause 버튼
       if (morePlayBtn) {
         const syncMoreButton = () => {
-          morePlayBtn.textContent = moreMainVideo.paused ? 'pause' : 'play';
+          morePlayBtn.textContent = moreMainVideo.paused ? '||' : '▶';
         };
 
         morePlayBtn.addEventListener('click', () => {
