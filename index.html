@@ -521,7 +521,7 @@
                 <span class="link-block">
                   <a id="link-pdf" href="#" target="_blank"
                      class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                    <span class="icon"><i class="fab fa-adobe"></i></span>
                     <span>Paper (PDF)</span>
                   </a>
                 </span>
@@ -539,13 +539,7 @@
                     <span>Code</span>
                   </a>
                 </span>
-                <span class="link-block">
-                  <a id="link-supp" href="#" target="_blank"
-                     class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon"><i class="fas fa-file-pdf"></i></span>
-                    <span>Supplementary</span>
-                  </a>
-                </span>
+                <!-- Supplementary 버튼 제거됨 -->
               </div>
             </div>
 
@@ -916,7 +910,7 @@
       setHref('link-pdf',  cfg.links.pdf);
       setHref('link-arxiv',cfg.links.arxiv);
       setHref('link-code', cfg.links.code);
-      setHref('link-supp', cfg.links.supp);
+      // Supplementary 버튼 제거 → setHref('link-supp', ...) 삭제
     }
 
     /* ===== Teaser & model overview ===== */
