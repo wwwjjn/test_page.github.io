@@ -302,10 +302,12 @@
 
     .comparison-label {
       position: absolute;
-      top: 12px;
-      padding: 4px 10px;
+      /* 컨테이너 높이에 비례해서 위에서 떨어지게 */
+      top: 3%;
+      padding: 0.25em 0.9em;
       border-radius: 999px;
-      font-size: 0.8rem;
+      /* 화면 크기에 따라 글자 크기도 자연스럽게 조절 */
+      font-size: clamp(0.7rem, 1.4vw, 0.9rem);
       font-weight: 600;
       background: rgba(0, 0, 0, 0.55);
       color: #fff;
@@ -313,11 +315,13 @@
     }
 
     .comparison-label-left {
-      left: 16px;
+      /* 왼쪽에서 컨테이너 폭 기준 비율만큼 떨어지게 */
+      left: 3%;
     }
-
+    
     .comparison-label-right {
-      right: 16px;
+      /* 오른쪽에서 컨테이너 폭 기준 비율만큼 떨어지게 */
+      right: 3%;
     }
 
     /* Results / thumbnails / tabs 공통 스타일 */
