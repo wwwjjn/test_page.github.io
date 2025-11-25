@@ -276,7 +276,7 @@
       box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4);
     }
 
-    .compare-handle-circle {
+    .compare-handle-circle { 
       position: absolute;
       top: 50%;
       left: 50%;
@@ -288,19 +288,12 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.3);
       display: flex;
       align-items: center;
-      justify-content: center;   /* 가운데 정렬 */
-      padding: 0;                /* 좌우 패딩 제거 */
+      justify-content: space-between;
+      padding: 0 7px;
       box-sizing: border-box;
     }
     
-    /* 새 아이콘용 스타일 */
-    .compare-handle-icon {
-      font-size: 18px;
-      line-height: 1;
-      color: #444;
-      user-select: none;
-      pointer-events: none;  /* 드래그/클릭은 핸들 전체에서 처리 */
-    }
+    
 
     .compare-handle-chev {
       font-size: 16px;
@@ -633,7 +626,8 @@
           <!-- Vertical slider handle with circle + < > -->
           <div class="compare-handle" id="compare-handle">
             <div class="compare-handle-circle">
-              <span class="compare-handle-icon" aria-label="Play/Pause">⏸</span>
+              <span class="compare-handle-chev">&lt;</span>
+              <span class="compare-handle-chev">&gt;</span>
             </div>
           </div>
         </div>
@@ -894,7 +888,6 @@
     const leftCaption = document.getElementById('video-left-caption');
     const rightCaption = document.getElementById('video-right-caption');
     const vcThumbs = document.getElementById('video-compare-thumbs');
-    const handleIcon = handle ? handle.querySelector('.compare-handle-icon') : null;
 
     const applyCompareVariant = (variant, autoplay=true) => {
       if (!variant || !vLeft || !vRight) return;
@@ -912,11 +905,6 @@
       if (rightLabel && variant.rightLabel) rightLabel.textContent = variant.rightLabel;
       if (leftCaption && variant.leftLabel)  leftCaption.textContent  = variant.leftLabel;
       if (rightCaption && variant.rightLabel) rightCaption.textContent = variant.rightLabel;
-    
-      // 아이콘 업데이트
-      if (handleIcon) {
-        handleIcon.textContent = autoplay ? '⏸' : '▶';
-      }
     };
 
 
@@ -1035,16 +1023,10 @@
       const togglePair = () => {
         if (!vLeft || !vRight) return;
         const shouldPlay = vLeft.paused || vRight.paused;
-      
         [vLeft, vRight].forEach(vid => {
           if (!vid) return;
           if (shouldPlay) vid.play().catch(()=>{}); else vid.pause();
         });
-      
-        // 아이콘 업데이트
-        if (handleIcon) {
-          handleIcon.textContent = shouldPlay ? '⏸' : '▶';
-        }
       };
       [container, handle].forEach(el => {
         if (!el) return;
