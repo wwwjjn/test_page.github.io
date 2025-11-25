@@ -302,12 +302,10 @@
 
     .comparison-label {
       position: absolute;
-      /* 컨테이너 높이에 비례해서 위에서 떨어지게 */
-      top: 3%;
-      padding: 0.25em 0.9em;
+      top: 12px;
+      padding: 4px 10px;
       border-radius: 999px;
-      /* 화면 크기에 따라 글자 크기도 자연스럽게 조절 */
-      font-size: clamp(0.7rem, 1.4vw, 0.9rem);
+      font-size: 0.8rem;
       font-weight: 600;
       background: rgba(0, 0, 0, 0.55);
       color: #fff;
@@ -315,13 +313,11 @@
     }
 
     .comparison-label-left {
-      /* 왼쪽에서 컨테이너 폭 기준 비율만큼 떨어지게 */
-      left: 3%;
+      left: 16px;   /* 왼쪽 상단 코너 */
     }
-    
+
     .comparison-label-right {
-      /* 오른쪽에서 컨테이너 폭 기준 비율만큼 떨어지게 */
-      right: 3%;
+      right: 16px;  /* 오른쪽 상단 코너 */
     }
 
     /* Results / thumbnails / tabs 공통 스타일 */
@@ -927,11 +923,12 @@
       // 슬라이더 드래그
       let isDraggingCompare = false;
 
-            const updatePosFromClientX = (clientX) => {
+      const updatePosFromClientX = (clientX) => {
         const rect = container.getBoundingClientRect();
         let t = (clientX - rect.left) / rect.width;
         t = Math.max(0, Math.min(1, t));
-        const percent = t * 100;          // 슬라이더 위치 (0~100)
+
+        const percent = t * 100;
 
         // 비디오 클리핑 + 핸들 위치
         if (videoRight) {
@@ -941,28 +938,19 @@
           handle.style.left = `${percent}%`;
         }
 
-        // === 라벨 위치/표시 조절 ===
-        const leftWidth  = percent;        // 왼쪽 영역 폭 (%)
-        const rightWidth = 100 - percent;  // 오른쪽 영역 폭 (%)
-        const MIN_VISIBLE = 12;            // 이보다 작으면 라벨 숨김
-        const SAFE_MARGIN = 6;             // 양 끝에서 조금 안쪽으로
+        // ==== 라벨 표시/숨기기 ====
+        const leftWidth  = percent;          // 왼쪽 영역 폭 (%)
+        const rightWidth = 100 - percent;    // 오른쪽 영역 폭 (%)
+        const MIN_VISIBLE = 10;              // 이보다 좁으면 해당 라벨 숨김
 
         // 왼쪽 라벨 (Baseline)
         if (leftLabel) {
           if (leftWidth < MIN_VISIBLE) {
-            // 영역이 너무 좁으면 라벨 숨김
             leftLabel.style.opacity = '0';
             leftLabel.style.pointerEvents = 'none';
           } else {
             leftLabel.style.opacity = '1';
             leftLabel.style.pointerEvents = '';
-            // 왼쪽 영역의 중앙 근처에 위치 (너무 모서리/핸들에 붙지 않게 clamp)
-            const centerFromLeft = leftWidth / 2;
-            const safeFromLeft = Math.max(
-              SAFE_MARGIN,
-              Math.min(centerFromLeft, leftWidth - SAFE_MARGIN)
-            );
-            leftLabel.style.left = `${safeFromLeft}%`;
           }
         }
 
@@ -974,13 +962,6 @@
           } else {
             rightLabel.style.opacity = '1';
             rightLabel.style.pointerEvents = '';
-            // 오른쪽 영역의 중앙 근처에 위치 (right 기준 거리)
-            const centerFromRight = rightWidth / 2;
-            const safeFromRight = Math.max(
-              SAFE_MARGIN,
-              Math.min(centerFromRight, rightWidth - SAFE_MARGIN)
-            );
-            rightLabel.style.right = `${safeFromRight}%`;
           }
         }
       };
