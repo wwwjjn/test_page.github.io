@@ -52,13 +52,6 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
-  <!-- Preconnect for performance -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://ajax.googleapis.com">
-  <link rel="preconnect" href="https://documentcloud.adobe.com">
-  <link rel="preconnect" href="https://cdn.jsdelivr.net">
-
   <!-- =========================
        PAGE CONFIG
      ========================= -->
@@ -129,21 +122,12 @@
   <link rel="icon" type="image/x-icon" href="">
   <link rel="apple-touch-icon" href="">
 
-  <!-- Critical CSS -->
+  <!-- CSS -->
   <link rel="stylesheet" href="static/css/bulma.min.css">
   <link rel="stylesheet" href="static/css/index.css">
-
-  <!-- Icons / Academicons -->
   <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-
-  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- Defer non-critical JavaScript -->
-  <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script defer src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
-  <script defer src="static/js/fontawesome.all.min.js"></script>
 
   <!-- 3D Viewer -->
   <script type="module" src="https://unpkg.com/@google/model-viewer@latest/dist/model-viewer.min.js"></script>
@@ -361,10 +345,10 @@
        ===================== */
     .media-control-bar {
       width: 100%;
-      max-width: 960px;          /* 영상 max-width와 동일 */
+      max-width: 960px;
       box-sizing: border-box;
       margin: 0.75rem auto 0;
-      padding: 0.5rem 0.9rem;
+      padding: 0.5rem 1rem;
       border-radius: 999px;
       background: #ffffff;
       box-shadow: 0 10px 30px rgba(15, 23, 42, 0.16);
@@ -374,35 +358,72 @@
       font-size: 0.85rem;
     }
 
+    /* Play / Pause 버튼: CSS 도형으로 아이콘 그리기 */
     .media-play-btn {
       background: #ffffff;
-      color: #111827;
       border: none;
-      width: 32px;
-      height: 32px;
+      width: 36px;
+      height: 36px;
       border-radius: 999px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       padding: 0;
-      font-size: 16px;             /* ▶ / || 공통 사이즈 */
-      line-height: 1;              /* 높이 딱 맞게 */
-      font-family: system-ui, -apple-system, BlinkMacSystemFont,
-                   "Segoe UI", sans-serif;
+      position: relative;
     }
 
     .media-play-btn:focus {
       outline: none;
       box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.4);
     }
+
+    .media-play-btn::before,
+    .media-play-btn::after {
+      content: "";
+      position: absolute;
+    }
+
+    /* 재생 상태 (▶) */
+    .media-play-btn[data-state="play"]::before {
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 8px 0 8px 13px;
+      border-color: transparent transparent transparent #111827;
+      transform: translateX(1px);  /* 시각적 중앙 보정 */
+    }
+
+    .media-play-btn[data-state="play"]::after {
+      width: 0;
+      height: 0;
+      background: none;
+    }
+
+    /* 일시정지 상태 (||) */
+    .media-play-btn[data-state="pause"]::before,
+    .media-play-btn[data-state="pause"]::after {
+      width: 3px;
+      height: 14px;
+      background: #111827;
+      border-radius: 1px;
+    }
+
+    .media-play-btn[data-state="pause"]::before {
+      transform: translateX(-3px);
+    }
+
+    .media-play-btn[data-state="pause"]::after {
+      transform: translateX(3px);
+    }
+
     .media-time-label {
       white-space: nowrap;
       color: #4b5563;
       font-variant-numeric: tabular-nums;
+      line-height: 1;
     }
 
-    /* 단색 cyan-blue progress bar */
     .media-progress {
       -webkit-appearance: none;
       appearance: none;
@@ -412,6 +433,7 @@
       background: #e5e7eb;
       outline: none;
       cursor: pointer;
+      margin-top: 1px;
       background-image: linear-gradient(
         to right,
         #06b6d4 0%,
@@ -420,25 +442,7 @@
         #e5e7eb 100%
       );
     }
-    .media-progress {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 100%;
-      height: 6px;                 /* 트랙 높이 */
-      border-radius: 999px;
-      background: #e5e7eb;
-      outline: none;
-      cursor: pointer;
-      background-image: linear-gradient(
-        to right,
-        #06b6d4 0%,
-        #06b6d4 var(--val, 0%),
-        #e5e7eb var(--val, 0%),
-        #e5e7eb 100%
-      );
-      margin-top: 1px;             /* 텍스트 베이스라인과 살짝 맞추기용 */
-    }
-    /* WebKit */
+
     .media-progress::-webkit-slider-runnable-track {
       height: 6px;
       border-radius: 999px;
@@ -457,7 +461,6 @@
       margin-top: -4px;
     }
 
-    /* Firefox */
     .media-progress::-moz-range-track {
       height: 6px;
       border-radius: 999px;
@@ -482,7 +485,7 @@
 </head>
 <body>
 
-  <!-- Scroll to Top Button (scrollToTop는 외부 JS에서 정의돼 있다고 가정) -->
+  <!-- Scroll to Top Button -->
   <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
     <i class="fas fa-chevron-up"></i>
   </button>
@@ -711,9 +714,9 @@
             id="video-compare-play"
             type="button"
             class="media-play-btn"
-          >
-            ▶
-          </button>
+            data-state="play"
+            aria-label="Play / Pause"
+          ></button>
           <span id="video-compare-time" class="media-time-label">
             0:00 / 0:00
           </span>
@@ -741,7 +744,7 @@
       <div class="results-main-wrapper">
         <video id="more-results-main"
                class="results-main-image"
-               muted loop playsinline preload="metadata" autoplay>
+               muted loop playsinline preload="metadata">
           <source id="more-results-main-source"
                   src=""
                   type="video/mp4">
@@ -753,9 +756,9 @@
             id="more-results-play"
             type="button"
             class="media-play-btn"
-          >
-            ▶
-          </button>
+            data-state="play"
+            aria-label="Play / Pause"
+          ></button>
           <span id="more-results-time" class="media-time-label">
             0:00 / 0:00
           </span>
@@ -845,6 +848,18 @@
 
   <!-- INLINE SCRIPTS -->
 <script>
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function copyBibTeX() {
+    const el = document.getElementById('bibtex-code');
+    if (!el) return;
+    const text = el.innerText || el.textContent;
+    navigator.clipboard && navigator.clipboard.writeText(text)
+      .catch(() => {});
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     const cfg = window.PAGE_CONFIG || {};
 
@@ -1081,7 +1096,7 @@
       if (comparePlayBtn && vLeft && vRight) {
         const syncCompareButton = () => {
           const playing = !vLeft.paused && !vRight.paused;
-          comparePlayBtn.textContent = playing ? '||' : '▶';  
+          comparePlayBtn.dataset.state = playing ? 'pause' : 'play';
         };
 
         comparePlayBtn.addEventListener('click', () => {
@@ -1265,7 +1280,7 @@
       // Play/Pause 버튼
       if (morePlayBtn) {
         const syncMoreButton = () => {
-          morePlayBtn.textContent = moreMainVideo.paused ? '▶' : '||';
+          morePlayBtn.dataset.state = moreMainVideo.paused ? 'play' : 'pause';
         };
 
         morePlayBtn.addEventListener('click', () => {
