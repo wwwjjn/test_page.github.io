@@ -389,6 +389,51 @@
       height: 100%;
       border: 0;
     }
+        .video-controls-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+      max-width: 960px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .video-play-btn {
+      border: none;
+      background: #111827;
+      color: #fff;
+      border-radius: 999px;
+      padding: 0.35rem 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+
+    .video-play-btn .icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .video-progress {
+      flex: 1;
+    }
+
+    .video-progress[type="range"] {
+      width: 100%;
+    }
+
+    .video-time-label {
+      font-size: 0.75rem;
+      color: #6b7280;
+      min-width: 4.5rem;
+      text-align: right;
+      white-space: nowrap;
+    }
+
   </style>
 
 <script type="importmap">
@@ -600,7 +645,21 @@
   <section class="section" id="video-compare-slider">
     <div class="container is-max-desktop">
       <h2 class="title is-3 has-text-centered">Qualitative Video Comparison</h2>
-
+      <!-- 재생 컨트롤: 비교용 두 영상 공통 -->
+        <div class="video-controls-bar">
+          <button id="compare-play-pause"
+                  class="video-play-btn"
+                  type="button">
+            <span class="icon"><i class="fas fa-play"></i></span>
+            <span>Play</span>
+          </button>
+          <input id="compare-progress"
+                 class="video-progress"
+                 type="range"
+                 min="0" max="1" step="0.001" value="0">
+          <span id="compare-time-label"
+                class="video-time-label">0:00</span>
+        </div>
       <div class="comparison-wrapper">
         <div class="comparison-video-container" id="video-compare-container">
           <!-- Left: Baseline -->
@@ -654,7 +713,21 @@
                   src=""
                   type="video/mp4">
         </video>
-
+        <!-- More Results 재생 컨트롤 -->
+        <div class="video-controls-bar">
+          <button id="more-play-pause"
+                  class="video-play-btn"
+                  type="button">
+            <span class="icon"><i class="fas fa-play"></i></span>
+            <span>Play</span>
+          </button>
+          <input id="more-progress"
+                 class="video-progress"
+                 type="range"
+                 min="0" max="1" step="0.001" value="0">
+          <span id="more-time-label"
+                class="video-time-label">0:00</span>
+        </div>
         <!-- 텍스트 배너 썸네일들 -->
         <div class="results-thumbs" id="more-results-thumbs-container">
           <!-- JS에서 PAGE_CONFIG.moreResultsVideos 로 채워짐 -->
@@ -736,6 +809,14 @@
   <!-- INLINE SCRIPTS -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    const formatTime = (sec) => {
+      if (!isFinite(sec)) return '0:00';
+      sec = Math.max(sec, 0);
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${m}:${s.toString().padStart(2, '0')}`;
+    };
+
     const cfg = window.PAGE_CONFIG || {};
 
     /* ===== 헤더 타이틀 / 저자 / 링크 ===== */
@@ -888,6 +969,38 @@
     const leftCaption = document.getElementById('video-left-caption');
     const rightCaption = document.getElementById('video-right-caption');
     const vcThumbs = document.getElementById('video-compare-thumbs');
+    const comparePlayBtn   = document.getElementById('compare-play-pause');
+    const compareProgress  = document.getElementById('compare-progress');
+    const compareTimeLabel = document.getElementById('compare-time-label');
+    let compareSeeking = false;
+
+    const syncCompareUI = () => {
+      if (!vLeft) return;
+      const dur = vLeft.duration || 0;
+      const ct  = vLeft.currentTime || 0;
+
+      if (compareProgress && dur > 0 && !compareSeeking) {
+        compareProgress.value = (ct / dur).toFixed(3);
+      }
+      if (compareTimeLabel) {
+        compareTimeLabel.textContent =
+          `${formatTime(ct)} / ${formatTime(dur)}`;
+      }
+
+      if (comparePlayBtn) {
+        const icon = comparePlayBtn.querySelector('i');
+        const text = comparePlayBtn.querySelector('span:last-child');
+        const isPlaying = !vLeft.paused && !vLeft.ended;
+        if (icon) icon.className = isPlaying ? 'fas fa-pause' : 'fas fa-play';
+        if (text) text.textContent = isPlaying ? 'Pause' : 'Play';
+      }
+    };
+
+    if (vLeft) {
+      ['timeupdate', 'loadedmetadata', 'play', 'pause'].forEach(ev => {
+        vLeft.addEventListener(ev, syncCompareUI);
+      });
+    }
 
     const applyCompareVariant = (variant, autoplay=true) => {
       if (!variant || !vLeft || !vRight) return;
@@ -905,6 +1018,7 @@
       if (rightLabel && variant.rightLabel) rightLabel.textContent = variant.rightLabel;
       if (leftCaption && variant.leftLabel)  leftCaption.textContent  = variant.leftLabel;
       if (rightCaption && variant.rightLabel) rightCaption.textContent = variant.rightLabel;
+      syncCompareUI();
     };
 
 
@@ -1019,7 +1133,7 @@
       window.addEventListener('touchend', () => { isDraggingCompare = false; });
       window.addEventListener('touchcancel', () => { isDraggingCompare = false; });
 
-      // 클릭하면 두 영상 동시에 play/pause
+      /* 클릭하면 두 영상 동시에 play/pause
       const togglePair = () => {
         if (!vLeft || !vRight) return;
         const shouldPlay = vLeft.paused || vRight.paused;
@@ -1027,7 +1141,33 @@
           if (!vid) return;
           if (shouldPlay) vid.play().catch(()=>{}); else vid.pause();
         });
+        syncCompareUI();
       };
+            if (comparePlayBtn) {
+        comparePlayBtn.addEventListener('click', () => {
+          togglePair();
+        });
+      }*/
+
+      if (compareProgress) {
+        compareProgress.addEventListener('input', () => {
+          compareSeeking = true;
+          if (!vLeft || !vRight || !vLeft.duration) return;
+          const t = parseFloat(compareProgress.value);
+          const target = t * vLeft.duration;
+          vLeft.currentTime = target;
+          if (vRight.duration) {
+            vRight.currentTime = Math.min(target, vRight.duration);
+          } else {
+            vRight.currentTime = target;
+          }
+          syncCompareUI();
+        });
+        compareProgress.addEventListener('change', () => {
+          compareSeeking = false;
+        });
+      }
+
       [container, handle].forEach(el => {
         if (!el) return;
         el.addEventListener('click', () => {
@@ -1044,7 +1184,36 @@
     const moreMainVideo       = document.getElementById('more-results-main');
     const moreMainSource      = document.getElementById('more-results-main-source');
     const moreThumbsContainer = document.getElementById('more-results-thumbs-container');
+    const morePlayBtn   = document.getElementById('more-play-pause');
+    const moreProgress  = document.getElementById('more-progress');
+    const moreTimeLabel = document.getElementById('more-time-label');
+    let moreSeeking = false;
 
+    const syncMoreUI = () => {
+      const dur = moreMainVideo.duration || 0;
+      const ct  = moreMainVideo.currentTime || 0;
+
+      if (moreProgress && dur > 0 && !moreSeeking) {
+        moreProgress.value = (ct / dur).toFixed(3);
+      }
+      if (moreTimeLabel) {
+        moreTimeLabel.textContent =
+          `${formatTime(ct)} / ${formatTime(dur)}`;
+      }
+
+      if (morePlayBtn) {
+        const icon = morePlayBtn.querySelector('i');
+        const text = morePlayBtn.querySelector('span:last-child');
+        const isPlaying = !moreMainVideo.paused && !moreMainVideo.ended;
+        if (icon) icon.className = isPlaying ? 'fas fa-pause' : 'fas fa-play';
+        if (text) text.textContent = isPlaying ? 'Pause' : 'Play';
+      }
+    };
+
+    ['timeupdate', 'loadedmetadata', 'play', 'pause'].forEach(ev => {
+      moreMainVideo.addEventListener(ev, syncMoreUI);
+    });
+    
     if (moreMainVideo &&
         moreMainSource &&
         moreThumbsContainer &&
@@ -1059,6 +1228,34 @@
         if (autoplay) {
           moreMainVideo.play().catch(() => {});
         }
+        if (moreProgress) moreProgress.value = 0;
+        moreSeeking = false;
+              if (morePlayBtn) {
+        morePlayBtn.addEventListener('click', () => {
+          if (moreMainVideo.paused || moreMainVideo.ended) {
+            moreMainVideo.play().catch(() => {});
+          } else {
+            moreMainVideo.pause();
+          }
+        });
+      }
+
+      if (moreProgress) {
+        moreProgress.addEventListener('input', () => {
+          moreSeeking = true;
+          if (!moreMainVideo.duration) return;
+          const t = parseFloat(moreProgress.value);
+          const target = t * moreMainVideo.duration;
+          moreMainVideo.currentTime = target;
+          syncMoreUI();
+        });
+        moreProgress.addEventListener('change', () => {
+          moreSeeking = false;
+        });
+      }
+
+
+        };
       };
 
       // 초기 상태
