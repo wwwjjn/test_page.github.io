@@ -378,7 +378,7 @@
       box-shadow: 0 8px 24px rgba(0,0,0,0.15);
       background: #000;
     }
-  
+
     .publication-video iframe {
       position: absolute;
       top: 0;
@@ -630,7 +630,18 @@
           </div>
         </div>
 
-        
+        <!-- 프로그레스 바 (Qualitative) -->
+        <div class="mt-3">
+          <input
+            id="video-compare-progress"
+            type="range"
+            min="0"
+            max="100"
+            step="0.1"
+            value="0"
+            style="width:100%;"
+          />
+        </div>
 
         <!-- Scene tabs -->
         <div class="results-thumbs mt-3" id="video-compare-thumbs"></div>
@@ -652,6 +663,19 @@
                   src=""
                   type="video/mp4">
         </video>
+
+        <!-- 프로그레스 바 (More Results) -->
+        <div class="mt-3">
+          <input
+            id="more-results-progress"
+            type="range"
+            min="0"
+            max="100"
+            step="0.1"
+            value="0"
+            style="width:100%;"
+          />
+        </div>
 
         <!-- 텍스트 배너 썸네일들 -->
         <div class="results-thumbs" id="more-results-thumbs-container">
@@ -680,8 +704,6 @@
       </div>
     </div>
   </section>
-
-  
 
   <!-- BIBTEX -->
   <section class="section" id="BibTeX">
@@ -886,6 +908,7 @@
     const leftCaption = document.getElementById('video-left-caption');
     const rightCaption = document.getElementById('video-right-caption');
     const vcThumbs = document.getElementById('video-compare-thumbs');
+    const compareProgress = document.getElementById('video-compare-progress');
 
     const applyCompareVariant = (variant, autoplay=true) => {
       if (!variant || !vLeft || !vRight) return;
@@ -903,6 +926,9 @@
       if (rightLabel && variant.rightLabel) rightLabel.textContent = variant.rightLabel;
       if (leftCaption && variant.leftLabel)  leftCaption.textContent  = variant.leftLabel;
       if (rightCaption && variant.rightLabel) rightCaption.textContent = variant.rightLabel;
+      if (compareProgress) {
+        compareProgress.value = 0;
+      }
     };
 
     if (Array.isArray(cfg.videoCompareSets) &&
@@ -913,6 +939,39 @@
 
       // 초기 세트 적용 (자동재생)
       applyCompareVariant(sets[0], true);
+
+      // 프로그레스 바: 두 영상과 동기화
+      if (compareProgress && vLeft && vRight) {
+        let isSeekingCompare = false;
+
+        const updateCompareProgress = () => {
+          if (!vLeft.duration || isSeekingCompare) return;
+          const ratio = vLeft.currentTime / vLeft.duration;
+          const pct = Math.max(0, Math.min(100, ratio * 100));
+          compareProgress.value = isNaN(pct) ? 0 : pct;
+        };
+
+        vLeft.addEventListener('timeupdate', updateCompareProgress);
+        vLeft.addEventListener('loadedmetadata', updateCompareProgress);
+
+        compareProgress.addEventListener('input', () => {
+          if (!vLeft.duration) return;
+          isSeekingCompare = true;
+          const pct = parseFloat(compareProgress.value) / 100;
+          const t = vLeft.duration * pct;
+          vLeft.currentTime = t;
+          if (vRight.duration) {
+            vRight.currentTime = Math.min(t, vRight.duration);
+          } else {
+            vRight.currentTime = t;
+          }
+        });
+
+        const stopSeekingCompare = () => { isSeekingCompare = false; };
+        compareProgress.addEventListener('change', stopSeekingCompare);
+        compareProgress.addEventListener('mouseup', stopSeekingCompare);
+        compareProgress.addEventListener('touchend', stopSeekingCompare);
+      }
 
       // 세트 선택용 탭 생성
       if (vcThumbs) {
@@ -1016,22 +1075,6 @@
       window.addEventListener('touchend', () => { isDraggingCompare = false; });
       window.addEventListener('touchcancel', () => { isDraggingCompare = false; });
 
-      // 클릭하면 두 영상 동시에 play/pause
-      const togglePair = () => {
-        if (!vLeft || !vRight) return;
-        const shouldPlay = vLeft.paused || vRight.paused;
-        [vLeft, vRight].forEach(vid => {
-          if (!vid) return;
-          if (shouldPlay) vid.play().catch(()=>{}); else vid.pause();
-        });
-      };
-      [container, handle].forEach(el => {
-        if (!el) return;
-        el.addEventListener('click', () => {
-          if (isDraggingCompare) return;
-          togglePair();
-        });
-      });
       const initialRect = container.getBoundingClientRect();
       updatePosFromClientX(initialRect.left + initialRect.width * 0.5);
 
@@ -1041,6 +1084,7 @@
     const moreMainVideo       = document.getElementById('more-results-main');
     const moreMainSource      = document.getElementById('more-results-main-source');
     const moreThumbsContainer = document.getElementById('more-results-thumbs-container');
+    const moreProgress        = document.getElementById('more-results-progress');
 
     if (moreMainVideo &&
         moreMainSource &&
@@ -1053,6 +1097,9 @@
       const setMainVideo = (src, autoplay = true) => {
         moreMainSource.src = src;
         moreMainVideo.load();
+        if (moreProgress) {
+          moreProgress.value = 0;
+        }
         if (autoplay) {
           moreMainVideo.play().catch(() => {});
         }
@@ -1060,6 +1107,34 @@
 
       // 초기 상태
       setMainVideo(vids[0].src, false);
+
+      // 메인 비디오와 프로그레스 동기화
+      if (moreProgress) {
+        let isSeekingMore = false;
+
+        const updateMoreProgress = () => {
+          if (!moreMainVideo.duration || isSeekingMore) return;
+          const ratio = moreMainVideo.currentTime / moreMainVideo.duration;
+          const pct = Math.max(0, Math.min(100, ratio * 100));
+          moreProgress.value = isNaN(pct) ? 0 : pct;
+        };
+
+        moreMainVideo.addEventListener('timeupdate', updateMoreProgress);
+        moreMainVideo.addEventListener('loadedmetadata', updateMoreProgress);
+
+        moreProgress.addEventListener('input', () => {
+          if (!moreMainVideo.duration) return;
+          isSeekingMore = true;
+          const pct = parseFloat(moreProgress.value) / 100;
+          const t = moreMainVideo.duration * pct;
+          moreMainVideo.currentTime = t;
+        });
+
+        const stopSeekingMore = () => { isSeekingMore = false; };
+        moreProgress.addEventListener('change', stopSeekingMore);
+        moreProgress.addEventListener('mouseup', stopSeekingMore);
+        moreProgress.addEventListener('touchend', stopSeekingMore);
+      }
 
       moreThumbsContainer.innerHTML = vids.map((r, idx) => `
         <button class="result-thumb ${idx === 0 ? 'is-active' : ''}"
@@ -1089,6 +1164,7 @@
     }
   });
 </script>
+
 <script type="module">
   import * as THREE from "three";
   import { OrbitControls } from "https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js";
@@ -1123,10 +1199,9 @@
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
-    controls.autoRotate = false;      // 혹시 켜져 있으면 반드시 끄기
-    controls.enableDamping = false;   // 일단 관성도 끔 (흐르는 느낌 제거)
+    controls.autoRotate = false;
+    controls.enableDamping = false;
 
-    // 회전 중심과 초기 상태 고정
     controls.target.set(0, 0, 0);
     controls.update();
     const light = new THREE.DirectionalLight(0xffffff, 1.0);
@@ -1161,12 +1236,11 @@
           geometry.center();
 
           console.log("ATTRIBUTES:", Object.keys(geometry.attributes));
-          // 여기서 ["position", "normal", "color"] 나오는지 확인
 
           const material = new THREE.PointsMaterial({
             size: 0.01,
             sizeAttenuation: true,
-            vertexColors: !!geometry.getAttribute("color"), // color 있으면 사용
+            vertexColors: !!geometry.getAttribute("color"),
           });
 
           const points = new THREE.Points(geometry, material);
@@ -1258,7 +1332,6 @@
     });
   });
 </script>
-
 
 </body>
 </html>
